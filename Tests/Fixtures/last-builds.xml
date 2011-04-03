@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Syndication all builds</title>
+    <link type="text/html" href="http://localhost:8080/job/Syndication/" rel="alternate"/>
+    <updated>2011-03-10T21:49:31Z</updated>
+    <author>
+        <name>Jenkins Server</name>
+    </author>
+    <id>urn:uuid:903deee0-7bfa-11db-9fe1-0800200c9a66</id>
+    <entry>
+        <title>Syndication #28 (back to normal)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/28/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2011:Syndication:2011-04-03_00-25-59</id>
+        <published>2011-04-02T22:25:59Z</published>
+        <updated>2011-04-02T22:25:59Z</updated>
+    </entry>
+    <entry>
+        <title>Syndication #27 (1 test  started to fail)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/27/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2011:Syndication:2011-04-03_00-19-41</id>
+        <published>2011-04-02T22:19:41Z</published>
+        <updated>2011-04-02T22:19:41Z</updated>
+    </entry>
+    <entry>
+        <title>Syndication #26 (stable)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/26/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2011:Syndication:2011-03-10_22-49-31</id>
+        <published>2011-03-10T21:49:31Z</published>
+        <updated>2011-03-10T21:49:31Z</updated>
+    </entry>
+    <entry>
+        <title>Syndication #25 (stable)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/25/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2011:Syndication:2011-03-10_20-22-44</id>
+        <published>2011-03-10T19:22:44Z</published>
+        <updated>2011-03-10T19:22:44Z</updated>
+    </entry>
+    <entry>
+        <title>Syndication #24 (stable)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/24/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2011:Syndication:2011-03-10_20-22-33</id>
+        <published>2011-03-10T19:22:33Z</published>
+        <updated>2011-03-10T19:22:33Z</updated>
+    </entry>
+    <entry>
+        <title>Syndication #23 (stable)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/23/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2011:Syndication:2011-03-10_20-21-25</id>
+        <published>2011-03-10T19:21:25Z</published>
+        <updated>2011-03-10T19:21:25Z</updated>
+    </entry>
+    <entry>
+        <title>Syndication #22 (stable)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/22/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2011:Syndication:2011-03-10_20-11-25</id>
+        <published>2011-03-10T19:11:25Z</published>
+        <updated>2011-03-10T19:11:25Z</updated>
+    </entry>
+    <entry>
+        <title>Syndication #21 (stable)</title><link type="text/html" href="http://localhost:8080/job/Syndication/21/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2011:Syndication:2011-03-03_17-40-19</id><published>2011-03-03T16:40:19Z</published>
+        <updated>2011-03-03T16:40:19Z</updated>
+    </entry>
+    <entry>
+        <title>Syndication #20 (stable)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/20/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2011:Syndication:2011-02-08_22-49-17</id>
+        <published>2011-02-08T21:49:17Z</published>
+        <updated>2011-02-08T21:49:17Z</updated>
+    </entry>
+    <entry>
+        <title>Syndication #19 (stable)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/19/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2011:Syndication:2011-01-24_17-33-10</id>
+        <published>2011-01-24T16:33:10Z</published>
+        <updated>2011-01-24T16:33:10Z</updated>
+    </entry>
+</feed>

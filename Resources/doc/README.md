@@ -1,0 +1,94 @@
+README
+======
+
+What is FOSJenkinsBundle?
+-------------------------
+
+The `FOSJenkinsBundle` is a Symfony2 bundle designed to collect information on a
+Jenkins continuous integration server and show them in a prettier shape in the 
+web debug toolbar and webprofiler tools.
+
+This bundle shows the state of the last build in the web debug toolbar and
+displays the ten last builds information in a panel of the web profiler
+application.
+
+The `FOSJenkinsBundle` is covered by a `PHPUnit` unit tests suite located under
+the `Tests/` folder.
+
+Requirements
+------------
+
+The `FOSJenkinsBundle` is only supported on PHP 5.3.2 and up. It works with a
+Jenkins continuous integration server running.
+
+Known limitations
+-----------------
+
+As of today, the `FOSJenkinsBundle` is not able to grab the last builds history
+RSS feed if there is an authentication in front of the `Jenkins` web server. To 
+make it work, you must deactivate any authentication mechanisms that protect the
+`Jenkins` dashboard and jobs summary access.
+
+Installation
+------------
+
+The `FOSJenkinsBundle` is easy to install. It doesn't require any particular
+skill to make it work. You just need to follow the steps below to make it run.
+
+First, create a new `FOS/Bundle` directory under the `vendor/bundles/` folder of 
+your Symfony2 project.
+
+    $ mkdir -p vendor/bundles/FOS/Bundle
+
+Install the `FOSJenkinsBundle` under this `FOS` directory.
+
+    $ git clone http://github.com/fos/jenkins-bundle.git vendor/bundles/FOS/Bundle/JenkinsBundle
+
+Register the `FOS` namespace prefix in the `app/autoload.php` file of your
+application to make Symfony2 able to load the bundle.
+
+    <?php
+
+    # app/autoload.php
+    use Symfony\Component\ClassLoader\UniversalClassLoader;
+
+    $loader = new UniversalClassLoader();
+    $loader->registerNamespaces(array(
+        // ...
+        'FOS'              => __DIR__.'/../vendor/bundles',
+    ));
+
+Then, load the `FOSJenkinsBundle` bundle for your development and testing
+environments only in your `AppKernel` class.
+
+    # app/AppKernel.php
+    public function registerBundles()
+    {
+        $bundles = array(
+            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            // ...
+        );
+
+        if (in_array($this->getEnvironment(), array('dev', 'test'))) {
+            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+            $bundles[] = new Symfony\Bundle\WebConfiguratorBundle\SymfonyWebConfiguratorBundle();
+            $bundles[] = new FOS\Bundle\JenkinsBundle\FOSJenkinsBundle();
+        }
+
+        return $bundles;
+    }
+
+Finally, configure the `FOSJenkinsBundle` bundle directly from the 
+`config_dev.yml` and `config_test.yml` files located under the `app/config/`
+directory of your Symfony2 installation.
+
+    # app/config/config_dev.yml
+    parameters:
+        # URI of the Jenkins RSS file that contains the last builds history
+        jenkins.builds.rss_summary: http://localhost:8080/job/Syndication/rssAll
+    --
+
+    # app/config/config_dev.yml
+    parameters:
+        # URI of the Jenkins RSS file that contains the last builds history
+        jenkins.builds.rss_summary: http://localhost:8080/job/Syndication/rssAll

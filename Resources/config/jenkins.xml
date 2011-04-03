@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="jenkins.data_collector.class">FOS\Bundle\JenkinsBundle\DataCollector\JenkinsDataCollector</parameter>
+        <parameter key="jenkins.logger.builds_summary_class">FOS\Bundle\JenkinsBundle\Logger\Build\BuildsSummaryLogger</parameter>
+    </parameters>
+
+    <services>
+
+        <service id="data_collector.jenkins" class="%jenkins.data_collector.class%" public="false">
+            <tag name="data_collector" template="FOSJenkins:Collector:jenkins" id="jenkins" />
+            <argument type="service" id="jenkins.logger.builds_summary" />
+        </service>
+
+        <service id="jenkins.logger.builds_summary" class="%jenkins.logger.builds_summary_class%" public="false">
+            <argument type="service" id="jenkins.rss.builds.parser"/>
+        </service>
+
+        <service id="jenkins.rss.builds.parser" class="SimpleXmlElement" public="false">
+            <argument>%jenkins.builds.rss_summary%</argument>
+            <argument>0</argument>
+            <argument>true</argument>
+        </service>
+    </services>
+</container>

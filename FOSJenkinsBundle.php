@@ -15,4 +15,5 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class FOSJenkinsBundle extends Bundle
 {
+    const VERSION = '0.1';
 }

@@ -98,3 +98,7 @@ directory of your Symfony2 installation.
                 # URI of the Jenkins RSS file that hosts the last builds history
                 rss_uri: http://localhost:8080/job/Syndication/rssAll
 
+
+Don't forget to publish assets:
+
+    $ php app/console assets:install --symlink web

@@ -22,6 +22,7 @@ use FOS\Bundle\JenkinsBundle\Logger\Build\BuildsSummaryLogger;
  * from an RSS feed coming from the Jenkins continuous integration server.
  *
  * @author Hugo Hamon <hugo.hamon@sensio.com>
+ * @author William DURAND <william.durand1@gmail.com>
  */
 class JenkinsDataCollector extends DataCollector
 {
@@ -31,15 +32,23 @@ class JenkinsDataCollector extends DataCollector
      * @var \FOS\Bundle\JenkinsBundle\Logger\Build\BuildsSummaryLogger
      */
     private $logger;
+    /**
+     * The Jenkins project endpoint
+     * 
+     * @var string
+     */
+    private $endpoint;
 
     /**
      * Constructor.
      *
      * @param BuildsSummaryLogger $logger A BuildsSummaryLogger instance
+     * @param string $endpoint A Jenkins project endpoint
      */
-    public function __construct(BuildsSummaryLogger $logger)
+    public function __construct(BuildsSummaryLogger $logger, $endpoint)
     {
         $this->logger = $logger;
+        $this->endpoint = $endpoint;
     }
 
     /**
@@ -50,8 +59,10 @@ class JenkinsDataCollector extends DataCollector
         $this->data = array(
             'builds'         => $this->logger->getBuildsSummary(),
             'builds_success' => $this->logger->getLastSuccessfullBuildsCount(),
-            'builds_failed'  => $this->logger->getLastFailedBuildsCount()
+            'builds_failed'  => 0,
         );
+
+        $this->data['endpoint'] = $this->endpoint;
     }
 
     /**
@@ -130,6 +141,16 @@ class JenkinsDataCollector extends DataCollector
         }
 
         return $match;
+    }
+
+    /**
+     * Returns the Jenkins project endpoint.
+     *
+     * @return string The Jenkins project endpoint.
+     */
+    public function getEndpoint()
+    {
+        return $this->data['endpoint'];
     }
 
     /**

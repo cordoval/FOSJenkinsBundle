@@ -21,13 +21,13 @@ Requirements
 The `FOSJenkinsBundle` is only supported on PHP 5.3.2 and up. It works with a
 Jenkins continuous integration server running.
 
-Known limitations
------------------
+Jenkins authentification
+------------------------
 
-As of today, the `FOSJenkinsBundle` is not able to grab the last builds history
-RSS feed if there is an authentication in front of the `Jenkins` web server. To 
-make it work, you must deactivate any authentication mechanisms that protect the
-`Jenkins` dashboard and jobs summary access.
+If your Jenkins requires authentification, you will have to use the following format 
+for the `rss_uri` parameter:
+
+    http://<login>:<password>@localhost:8080/job/Syndication/rssAll
 
 Installation
 ------------
@@ -97,3 +97,4 @@ directory of your Symfony2 installation.
             summary:
                 # URI of the Jenkins RSS file that hosts the last builds history
                 rss_uri: http://localhost:8080/job/Syndication/rssAll
+

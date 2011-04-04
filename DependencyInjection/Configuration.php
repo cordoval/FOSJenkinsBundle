@@ -21,6 +21,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  * sections are normalized, and merged.
  *
  * @author Hugo Hamon <hugo.hamon@sensio.com>
+ * @author William DURAND <william.durand1@gmail.com>
  */
 class Configuration
 {
@@ -36,26 +37,8 @@ class Configuration
 
         $rootNode
             ->children()
-                ->arrayNode('builds')
-                    ->children()
-                        ->arrayNode('summary')
-                            ->children()
-                                ->scalarNode('rss_uri')
-                                
-                                // This does not work for now...
-                                
-                                /*->validate()
-                                    ->ifTrue(function($v) {
-                                        return $v === filter_var($v, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED);
-                                    })
-                                    ->thenInvalid('%s must be a valid uri.')
-                                ->end()*/
-                            ->end()    
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
+            ->scalarNode('endpoint')
+            ->end();
 
         return $treeBuilder->buildTree();
     }

@@ -3,7 +3,7 @@
 /*
  * This file is part of the FOSJenkins package.
  *
- * (c) Hugo Hamon <webmaster@apprendre-php.com>
+ * (c) Hugo Hamon <hugo.hamon@sensio.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,7 +21,7 @@ use FOS\Bundle\JenkinsBundle\Logger\Build\BuildsSummaryLogger;
  * The JenkinsDataCollector collector class collects builds information
  * from an RSS feed coming from the Jenkins continuous integration server.
  *
- * @author Hugo Hamon <webmaster@apprendre-php.com>
+ * @author Hugo Hamon <hugo.hamon@sensio.com>
  */
 class JenkinsDataCollector extends DataCollector
 {

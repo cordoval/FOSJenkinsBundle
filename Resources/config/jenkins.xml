@@ -21,7 +21,7 @@
         </service>
 
         <service id="jenkins.rss.builds.parser" class="SimpleXmlElement" public="false">
-            <argument>%jenkins.builds.rss_summary%</argument>
+            <argument>%jenkins.builds.summary.rss_uri%</argument>
             <argument>0</argument>
             <argument>true</argument>
         </service>

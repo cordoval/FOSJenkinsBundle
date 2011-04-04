@@ -55,7 +55,7 @@ application to make Symfony2 able to load the bundle.
     $loader = new UniversalClassLoader();
     $loader->registerNamespaces(array(
         // ...
-        'FOS'              => __DIR__.'/../vendor/bundles',
+        'FOS' => __DIR__.'/../vendor/bundles',
     ));
 
 Then, load the `FOSJenkinsBundle` bundle for your development and testing
@@ -83,12 +83,17 @@ Finally, configure the `FOSJenkinsBundle` bundle directly from the
 directory of your Symfony2 installation.
 
     # app/config/config_dev.yml
-    parameters:
-        # URI of the Jenkins RSS file that contains the last builds history
-        jenkins.builds.rss_summary: http://localhost:8080/job/Syndication/rssAll
+    fos_jenkins:
+        builds:
+            summary:
+                # URI of the Jenkins RSS file that hosts the last builds history
+                rss_uri: http://localhost:8080/job/Syndication/rssAll
+
     --
 
     # app/config/config_test.yml
-    parameters:
-        # URI of the Jenkins RSS file that contains the last builds history
-        jenkins.builds.rss_summary: http://localhost:8080/job/Syndication/rssAll
+    fos_jenkins:
+        builds:
+            summary:
+                # URI of the Jenkins RSS file that hosts the last builds history
+                rss_uri: http://localhost:8080/job/Syndication/rssAll

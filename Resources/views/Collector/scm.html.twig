@@ -1,0 +1,29 @@
+<h2>Commits Logs History</h2>
+
+<table summary="Last SCM logs history coming from Jenkins' logs">
+    <thead>
+        <tr>
+            <th style="text-align: center">#ID</th>
+            <th>Commit message</th>
+            <th>Author</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for commit in collector.commits %}
+        <tr>
+            <td style="text-align: center; width: 40px">
+                #{{ commit.build_id }}
+            </td>
+            <td>{{ commit.message }}</td>
+            <td>{{ commit.author }}</td>
+            <td>{{ commit.date|date('d M. Y H:i') }}</td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                {{ commit.details }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

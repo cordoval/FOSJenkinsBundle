@@ -40,7 +40,8 @@ class Configuration
                     ->children()
                         ->arrayNode('summary')
                             ->children()
-                                ->scalarNode('rss_uri')
+                                ->scalarNode('rss_uri')->end()
+                                ->scalarNode('rss_scm')->end()
                                 
                                 // This does not work for now...
                                 

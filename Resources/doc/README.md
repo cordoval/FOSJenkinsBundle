@@ -88,7 +88,7 @@ directory of your Symfony2 installation.
         jenkins.builds.rss_summary: http://localhost:8080/job/Syndication/rssAll
     --
 
-    # app/config/config_dev.yml
+    # app/config/config_test.yml
     parameters:
         # URI of the Jenkins RSS file that contains the last builds history
         jenkins.builds.rss_summary: http://localhost:8080/job/Syndication/rssAll

@@ -12,7 +12,7 @@
     <services>
 
         <service id="data_collector.jenkins" class="%jenkins.data_collector.class%" public="false">
-            <tag name="data_collector" template="FOSJenkins:Collector:jenkins" id="jenkins" />
+            <tag name="data_collector" template="FOSJenkinsBundle:Collector:jenkins" id="jenkins" />
             <argument type="service" id="jenkins.logger.builds_summary" />
         </service>
 

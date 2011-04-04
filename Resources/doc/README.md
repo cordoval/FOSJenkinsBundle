@@ -42,7 +42,7 @@ your Symfony2 project.
 
 Install the `FOSJenkinsBundle` under this `FOS` directory.
 
-    $ git clone http://github.com/fos/jenkins-bundle.git vendor/bundles/FOS/Bundle/JenkinsBundle
+    $ git clone https://github.com/hhamon/FOSJenkinsBundle.git vendor/bundles/FOS/Bundle/JenkinsBundle
 
 Register the `FOS` namespace prefix in the `app/autoload.php` file of your
 application to make Symfony2 able to load the bundle.

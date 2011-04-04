@@ -14,6 +14,7 @@
         <service id="data_collector.jenkins" class="%jenkins.data_collector.class%" public="false">
             <tag name="data_collector" template="FOSJenkinsBundle:Collector:jenkins" id="jenkins" />
             <argument type="service" id="jenkins.logger.builds_summary" />
+            <argument>%jenkins.endpoint%</argument>
         </service>
 
         <service id="jenkins.logger.builds_summary" class="%jenkins.logger.builds_summary_class%" public="false">

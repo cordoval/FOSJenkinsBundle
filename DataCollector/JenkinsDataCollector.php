@@ -22,7 +22,7 @@ use FOS\Bundle\JenkinsBundle\Logger\Build\BuildsSummaryLogger;
  * from an RSS feed coming from the Jenkins continuous integration server.
  *
  * @author Hugo Hamon <hugo.hamon@sensio.com>
- * @author William DURAND <william.durand1@gmail.com>
+ * @author William Durand <william.durand1@gmail.com>
  */
 class JenkinsDataCollector extends DataCollector
 {

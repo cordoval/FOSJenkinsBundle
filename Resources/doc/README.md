@@ -24,15 +24,15 @@ Jenkins continuous integration server running.
 Jenkins authentification
 ------------------------
 
-If your Jenkins requires authentification, you will have to use the following 
-format for the `endpoint` parameter:
+If your Jenkins requires authentification, you will have to use the following format
+for the `endpoint` parameter:
 
     http://<login>:<password>@localhost:8080/job/Syndication/rssAll
 
 Installation
 ------------
 
-The `FOSJenkinsBundle` is easy to install. It doesn't require any particular
+The `FOSJenkinsBundle` is easy to install. It does not require any particular
 skill to make it work. You just need to follow the steps below to make it run.
 
 First, create a new `FOS/Bundle` directory under the `vendor/bundles/` folder of 

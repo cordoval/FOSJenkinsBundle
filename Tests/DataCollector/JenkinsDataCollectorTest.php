@@ -20,6 +20,9 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
      * @var \SimpleXmlElement
      */
     private $xml;
+    /**
+     */
+    private $endpoint = 'http://localhost:8080';
 
     protected function setup()
     {

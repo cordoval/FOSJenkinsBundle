@@ -58,12 +58,22 @@ class JenkinsDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = array(
-            'builds'         => $this->history->getBuildsSummary(),
+            'builds'         => $this->history->getBuilds(),
             'builds_success' => $this->history->getLastSuccessfullBuildsCount(),
             'builds_failed'  => $this->history->getLastFailedBuildsCount(),
         );
 
         $this->data['endpoint'] = $this->endpoint;
+    }
+
+    /**
+     * Returns the last build instance.
+     *
+     * @return FOS\Bundle\JenkinsBundle\BuildAnalysis\Build
+     */
+    public function getLastBuild()
+    {
+        return $this->data['builds'][0];
     }
 
     /**
@@ -73,7 +83,7 @@ class JenkinsDataCollector extends DataCollector
      */
     public function isLastBuildSuccessfull()
     {
-        return (Boolean) $this->data['builds'][0]['success'];
+        return (Boolean) $this->getLastBuild()->isSucceeded();
     }
 
     /**
@@ -83,7 +93,7 @@ class JenkinsDataCollector extends DataCollector
      */
     public function getLastBuildNumber()
     {
-        return $this->data['builds'][0]['id'];
+        return $this->getLastBuild()->getNumber();
     }
 
     /**
@@ -134,14 +144,13 @@ class JenkinsDataCollector extends DataCollector
      */
     public function getBuild($number)
     {
-        $match = null;
         foreach ($this->data['builds'] as $build) {
-            if ($build['id'] == $number) {
-                $match = $build;
+            if ($build->getNumber() == $number) {
+                return $build;
             }
         }
 
-        return $match;
+        return null;
     }
 
     /**

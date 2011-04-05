@@ -29,11 +29,11 @@ class BuildHistory
     private $xml;
 
     /**
-     * The build history summary.
+     * The builds history summary.
      *
      * @var array
      */
-    private $summary;
+    private $builds;
 
     /**
      * Constructor.
@@ -43,32 +43,53 @@ class BuildHistory
     public function __construct(\SimpleXmlElement $xml)
     {
         $this->xml = $xml;
-        $this->summary = array();
+        $this->builds = array();
+
+        $this->buildBuildHistory();
     }
 
     /**
      * Loads the whole builds history summary by parsing the RSS feed.
      *
      */
-    private function loadBuildsSummary()
+    private function buildBuildHistory()
     {
-        if (!count($this->summary)) {
-            foreach ($this->xml->entry as $entry) {
-                $title = (string) $entry->title;
-                preg_match_all("`#(\d+) \((.*)\)`", $title, $matches);
+        foreach ($this->xml->entry as $entry) {
+            $infos = $this->extractBuildInfos((string) $entry->title);
+            $uri   = (string) $entry->link['href'];
+            $date  = (string) $entry->published;
 
-                $id = (int) $matches[1][0];
-                $status = $matches[2][0];
+            $build = new Build($infos['number'], $infos['status'], $uri, $date, $this->isBuildSuccessfull($infos['status']));
 
-                $this->summary[] = array(
-                    'id' => $id,
-                    'status' => $status,
-                    'uri' => (string) $entry->link['href'],
-                    'date' => (string) $entry->published,
-                    'success' => $this->isBuildSuccessfull($status)
-                );
-            }
+            $this->builds[] = $build;
         }
+    }
+
+    /**
+     * Extracts build information from the build title. This method extracts
+     * the build number and the build status.
+     *
+     * @param string $title The title string from which to extract information
+     * @return array $infos Build information as an associative array
+     */
+    private function extractBuildInfos($title)
+    {
+        $infos = array(
+            'number' => '',
+            'status' => ''
+        );
+
+        preg_match_all("`#(\d+) \((.*)\)`", $title, $matches);
+
+        if (!empty($matches[1][0])) {
+            $infos['number'] = (int) $matches[1][0];
+        }
+
+        if (!empty($matches[2][0])) {
+            $infos['status'] = $matches[2][0];
+        }
+
+        return $infos;
     }
 
     /**
@@ -89,16 +110,14 @@ class BuildHistory
     /**
      * Returns the whole builds summary.
      *
-     * The builds summary contains basic information on each last builds like
+     * The builds history contains basic information on each last builds like
      * whether or not it's successfull or the date at which the build was run.
      *
      * @return array The builds history summary
      */
-    public function getBuildsSummary()
+    public function getBuilds()
     {
-        $this->loadBuildsSummary();
-
-        return $this->summary;
+        return $this->builds;
     }
 
     /**
@@ -108,11 +127,9 @@ class BuildHistory
      */
     public function getLastSuccessfullBuildsCount()
     {
-        $this->loadBuildsSummary();
-
         $count = 0;
-        foreach ($this->summary as $build) {
-            if ($build['success']) {
+        foreach ($this->builds as $build) {
+            if ($build->isSucceeded()) {
                 $count++;
             }
         }
@@ -127,8 +144,6 @@ class BuildHistory
      */
     public function getLastFailedBuildsCount()
     {
-        $this->loadBuildsSummary();
-
-        return count($this->summary) - $this->getLastSuccessfullBuildsCount();
+        return count($this->builds) - $this->getLastSuccessfullBuildsCount();
     }
 }

@@ -30,10 +30,10 @@ class BuildHistoryTest extends \PHPUnit_Framework_TestCase
         $this->xml = null;
     }
 
-    public function testGetBuildsSummary()
+    public function testGetBuilds()
     {
         $logger = new BuildHistory($this->xml);
-        $this->assertEquals(10, count($logger->getBuildsSummary()));
+        $this->assertEquals(10, count($logger->getBuilds()));
     }
 
     public function testIsBuildSuccessfull()

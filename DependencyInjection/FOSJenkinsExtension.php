@@ -36,7 +36,7 @@ class FOSJenkinsExtension extends Extension
         $config = $processor->process($configuration->getConfigTree(), $configs);
 
         $container->setParameter('jenkins.endpoint', $config['endpoint']);
-        $container->setParameter('jenkins.builds.summary.rss_uri', $config['endpoint'] . '/rssAll');
+        $container->setParameter('jenkins.builds.builds.rss_uri', $config['endpoint'] . '/rssAll');
         $container->setParameter('jenkins.builds.commits.rss_uri', $config['endpoint'] . '/rssChangelog');
     }
 

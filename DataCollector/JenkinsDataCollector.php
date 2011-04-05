@@ -67,11 +67,11 @@ class JenkinsDataCollector extends DataCollector
     }
 
     /**
-     * Returns the last build instance.
+     * Returns the most recent build instance.
      *
      * @return FOS\Bundle\JenkinsBundle\BuildAnalysis\Build
      */
-    public function getLastBuild()
+    public function getMostRecentBuild()
     {
         return $this->data['builds'][0];
     }
@@ -83,7 +83,7 @@ class JenkinsDataCollector extends DataCollector
      */
     public function isLastBuildSuccessfull()
     {
-        return (Boolean) $this->getLastBuild()->isSucceeded();
+        return (Boolean) $this->getMostRecentBuild()->isSucceeded();
     }
 
     /**
@@ -93,7 +93,7 @@ class JenkinsDataCollector extends DataCollector
      */
     public function getLastBuildNumber()
     {
-        return $this->getLastBuild()->getNumber();
+        return $this->getMostRecentBuild()->getNumber();
     }
 
     /**

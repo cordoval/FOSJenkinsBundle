@@ -5,10 +5,11 @@
         <img alt="Jenkins" style="border-width: 0; vertical-align: middle; margin-right: 5px;" src="data:image/png;base64,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"/>
     {% endset %}
     {% set text %}
+
         {% if collector.isLastBuildSuccessfull %}
-            <span title="Build #{{ collector.lastBuildNumber }} succeeded" style="color: #759e1a">succeeded</span>
+            <span title="Build #{{ collector.mostRecentBuild.number }} succeeded" style="color: #759e1a">succeeded</span>
         {% else %}
-            <span title="Build #{{ collector.lastBuildNumber }} failed" style="color: #a33">failed</span>
+            <span title="Build #{{ collector.mostRecentBuild.number }} failed" style="color: #a33">failed</span>
         {% endif %}
     {% endset %}
     {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
@@ -56,7 +57,7 @@
     {% if 'commits' == subpanel %}
         {% render 'FOSJenkinsBundle:BuildAnalysis:commitHistory' with { 'collector': collector } %}
     {% else %}
-        {% include 'FOSJenkinsBundle:Collector:history.html.twig' with { 'collector': collector } only %}
+        {% render 'FOSJenkinsBundle:BuildAnalysis:buildHistory' with { 'collector': collector } %}
     {% endif %}
 
     <h2>Actions</h2>

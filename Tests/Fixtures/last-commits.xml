@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?> <feed
+xmlns="http://www.w3.org/2005/Atom">
+    <title>Syndication Subversion
+changes</title>
+    <link type="text/html" href="http://localhost:8080/job/Syndication/changes" rel="alternate"/>
+    <updated>2011-04-02T22:25:59Z</updated>
+    <author>
+        <name>Jenkins Server</name>
+    </author>
+    <id>urn:uuid:903deee0-7bfa-11db-9fe1-0800200c9a66</id>
+
+    <entry>
+        <title>#28 [tests] reverted previous change; (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/28/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/28/changes#detail0</id>
+        <published>2011-04-02T22:25:59Z</published>
+        <updated>2011-04-02T22:25:59Z</updated>
+        <content>
+            tests/Syndication/Rss/CategoryTest.php
+            src/foo.php
+            build.xml
+        </content>
+    </entry>
+
+    <entry>
+        <title>#27 [tests] forced build to fail (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/27/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/27/changes#detail0</id>
+        <published>2011-04-02T22:19:41Z</published>
+        <updated>2011-04-02T22:19:41Z</updated>
+        <content>tests/Syndication/Rss/CategoryTest.php</content>
+    </entry>
+
+    <entry>
+        <title>#26 [project] added unit tests (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/26/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/26/changes#detail0</id>
+        <published>2011-03-10T21:49:31Z</published>
+        <updated>2011-03-10T21:49:31Z</updated>
+        <content>
+            tests/Syndication/Rss/ImageTest.php
+            src/Syndication/Rss/Image.php src/Syndication/Rss/Feed.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#24 [Rss] removed set/getFoo() from Feed class (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/24/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/24/changes#detail0</id>
+        <published>2011-03-10T19:22:33Z</published>
+        <updated>2011-03-10T19:22:33Z</updated>
+        <content>
+            src/Syndication/Rss/Feed.phptests/Syndication/Rss/FeedTest.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#23 [Rss] simplification (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/23/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/23/changes#detail0</id>
+        <published>2011-03-10T19:21:25Z</published>
+        <updated>2011-03-10T19:21:25Z</updated>
+        <content>
+            src/Syndication/Rss/ChannelItem.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#22 [project] changed phpmd target (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/22/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/22/changes#detail0</id>
+        <published>2011-03-10T19:11:25Z</published>
+        <updated>2011-03-10T19:11:25Z</updated>
+        <content>build.xml</content>
+    </entry>
+
+    <entry>
+        <title>#19 [Syndication] added setFoo / getFoo methods (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/19/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/19/changes#detail0</id>
+        <published>2011-01-24T16:33:10Z</published>
+        <updated>2011-01-24T16:33:10Z</updated>
+        <content>
+            src/Syndication/Rss/Feed.php
+            tests/Syndication/Rss/FeedTest.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#18 [Syndication] added Code Browser build tool (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/18/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/18/changes#detail0</id>
+        <published>2011-01-23T23:20:14Z</published>
+        <updated>2011-01-23T23:20:14Z</updated>
+        <content>
+            src/Syndication/Rss/Feed.php
+            build.xml
+            tests/Syndication/Rss/FeedTest.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#17 [Syndication] added codestyle target command to the build.xml file (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/17/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/17/changes#detail0</id>
+        <published>2011-01-23T22:53:18Z</published>
+        <updated>2011-01-23T22:53:18Z</updated>
+        <content>
+            build.xml
+        </content>
+    </entry>
+
+    <entry>
+        <title>#16 [Syndication] added Feed::setGenerator() and Feed::getGenerator() methods (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/16/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/16/changes#detail0</id>
+        <published>2011-01-23T22:11:30Z</published>
+        <updated>2011-01-23T22:11:30Z</updated>
+        <content>
+            src/Syndication/Rss/Feed.php
+            tests/Syndication/Rss/FeedTest.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#15 [Syndication] fixed code coverage (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/15/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/15/changes#detail0</id>
+        <published>2011-01-23T22:07:26Z</published>
+        <updated>2011-01-23T22:07:26Z</updated>
+        <content>
+            tests/Syndication/Rss/ChannelItemTest.php
+            tests/Syndication/Rss/FeedTest.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#14 [Syndication] added Feed::setManagingEditor() and Feed::getManagingEditor() methods (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/14/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/14/changes#detail0</id>
+        <published>2011-01-23T21:53:12Z</published>
+        <updated>2011-01-23T21:53:12Z</updated>
+        <content>
+            src/Syndication/Rss/Feed.php
+            tests/Syndication/Rss/FeedTest.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#13 [Syndication] added ChannelItem::setGuid() and ChannelItem::getGuid() methods (hugo.hamon)</title>
+        <link type="text/html"
+href="http://localhost:8080/job/Syndication/13/changes#detail0"
+rel="alternate"/>
+        <id>job/Syndication/13/changes#detail0</id>
+        <published>2011-01-23T21:48:42Z</published>
+        <updated>2011-01-23T21:48:42Z</updated>
+        <content>
+            tests/Syndication/Rss/ChannelItemTest.php
+            src/Syndication/Rss/ChannelItem.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#12 [Syndication] fixed broken unit test suite (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/12/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/12/changes#detail0</id>
+        <published>2011-01-23T21:39:35Z</published>
+        <updated>2011-01-23T21:39:35Z</updated>
+        <content>
+            tests/Syndication/Rss/GuidTest.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#10 [Syndication] Changed phpcpd options (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/10/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/10/changes#detail0</id>
+        <published>2011-01-23T21:30:04Z</published>
+        <updated>2011-01-23T21:30:04Z</updated>
+        <content>
+            build.xml
+        </content>
+    </entry>
+
+    <entry>
+        <title>#9 [Syndication] added pmd build tool (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/9/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/9/changes#detail0</id>
+        <published>2011-01-23T21:24:28Z</published>
+        <updated>2011-01-23T21:24:28Z</updated>
+        <content>
+            src/Syndication/Rss/Guid.php
+            src/Syndication/Rss/Feed.php
+            tests/Syndication/Rss/GuidTest.php
+            build.xml
+            tests/Syndication/Rss/ChannelItemTest.php
+            src/Syndication/Rss/ChannelItem.php
+            tests/Syndication/Rss/FeedTest.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#8 [Syndication] added PDepend build tool (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/8/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/8/changes#detail0</id>
+        <published>2011-01-23T20:18:07Z</published>
+        <updated>2011-01-23T20:18:07Z</updated>
+        <content>
+            src/Syndication/Rss/Feed.php
+            build.xml
+            tests/Syndication/Rss/ChannelItemTest.php
+            src/Syndication/Rss/ChannelItem.php
+            tests/Syndication/Rss/FeedTest.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#7 [Syndication] fixed duplicated code (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/7/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/7/changes#detail0</id>
+        <published>2011-01-23T19:20:50Z</published>
+        <updated>2011-01-23T19:20:50Z</updated>
+        <content>
+            tests/Syndication/Rss/ItemTest.php
+            src/Syndication/Rss/Feed.php
+            src/Syndication/Rss/ChannelItem.php
+            src/Syndication/Rss/Item.php
+            tests/Syndication/Rss/FeedTest.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#6 [Syndication] added phpcpd command tool to the build process (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/6/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/6/changes#detail0</id>
+        <published>2011-01-23T19:05:50Z</published>
+        <updated>2011-01-23T19:05:50Z</updated>
+        <content>
+            src/Syndication/Rss/Feed.php
+            build.xml
+            src/Syndication/Rss/ChannelItem.php
+            src/Syndication/Rss/Item.php
+        </content>
+    </entry>
+
+    <entry>
+        <title>#5 [Syndication] fixed phpdocumentation build command (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/5/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/5/changes#detail0</id>
+        <published>2011-01-23T17:57:51Z</published>
+        <updated>2011-01-23T17:57:51Z</updated>
+        <content>
+            build.xml
+        </content>
+    </entry>
+
+    <entry>
+        <title>#4 [Syndication] fixed phpdocumentation build command (hugo.hamon)</title>
+        <link type="text/html"
+href="http://localhost:8080/job/Syndication/4/changes#detail0"
+rel="alternate"/>
+        <id>job/Syndication/4/changes#detail0</id>
+        <published>2011-01-23T17:55:28Z</published>
+        <updated>2011-01-23T17:55:28Z</updated>
+        <content>
+            build.xml
+        </content>
+    </entry>
+
+    <entry>
+        <title>#3 [Syndication] added phpdocumentation build command (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/3/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/3/changes#detail0</id>
+        <published>2011-01-23T17:45:50Z</published>
+        <updated>2011-01-23T17:45:50Z</updated>
+        <content>
+            build.xml
+        </content>
+    </entry>
+
+    <entry>
+        <title>#2 [Syndication] refactored code. Implement Composite design pattern (hugo.hamon)</title>
+        <link type="text/html" href="http://localhost:8080/job/Syndication/2/changes#detail0" rel="alternate"/>
+        <id>job/Syndication/2/changes#detail0</id>
+        <published>2011-01-23T17:05:50Z</published>
+        <updated>2011-01-23T17:05:50Z</updated>
+        <content>
+            tests/Syndication/Rss/FeedCompositeTest.php
+            src/Syndication/Rss/FeedComposite.php
+            src/Syndication/Rss/Feed.php
+        </content>
+    </entry>
+</feed>

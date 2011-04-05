@@ -30,43 +30,34 @@
 {% endblock %}
 
 {% block panel %}
-    <h2>Last results</2>
-
-    <div style="text-align:center;">
-        <p>Tests trend</p>
-        <img src="{{ collector.endpoint }}/test/trend" />
-    </div>
 
     <h2>Builds History</h2>
 
-    <table summary="Last builds history coming from Jenkins' logs">
-        <thead>
-            <tr>
-                <th style="text-align: center">Status</th>
-                <th style="text-align: center">#ID</th>
-                <th>Build status</th>
-                <th>Build date</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for build in collector.builds %}
-            <tr>
-                <th style="text-align: center; width: 40px">
-                    <a href="{{ build.uri }}" title="Go to the build summary">
-                    {% if build.success %}
-                        <img src="{{ asset('bundles/fosjenkins/images/profiler/green_ball_20x20.png') }}" alt="Build successfull" title="Build successfull" />
-                    {% else %}
-                        <img src="{{ asset('bundles/fosjenkins/images/profiler/red_ball_20x20.png') }}" alt="Build failed" title="Build failed"/>
-                    {% endif %}
-                    </a>
-                </th>
-                <th style="text-align: center; width: 40px">#{{ build.id }}</th>
-                <td>{{ build.status }}</td>
-                <td>{{ build.date|date('d M. Y H:i') }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% set panel_uri = path('_profiler', { 'token': token, 'panel': 'jenkins' }) %}
+
+    <ul id="jenkins_menu">
+        <li><a href="{{ panel_uri }}">Builds history</a></li>
+        <li><a href="{{ panel_uri }}&amp;subpanel=commits">Commits logs</a></li>
+        <li><a href="#">Unit tests</a></li>
+        <li><a href="#">Code coverage</a></li>
+        <li><a href="#">PMD</a></li>
+        <li><a href="#">JDepend</a></li>
+        <li><a href="#">PHPCDP</a></li>
+        <li><a href="#">Violations</a></li>
+    </ul>
+
+    <style type="text/css">
+        #jenkins_menu { margin-bottom: 25px }
+        #jenkins_menu li { display: inline; margin: 5px }
+    </style>
+
+    {% set subpanel = app.request.query.get('subpanel') %}
+
+    {% if 'commits' == subpanel %}
+        {% render 'FOSJenkinsBundle:BuildAnalysis:commitHistory' with { 'collector': collector } %}
+    {% else %}
+        {% include 'FOSJenkinsBundle:Collector:history.html.twig' with { 'collector': collector } only %}
+    {% endif %}
 
     <h2>Actions</h2>
 

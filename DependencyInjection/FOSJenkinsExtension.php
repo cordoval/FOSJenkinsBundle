@@ -37,6 +37,7 @@ class FOSJenkinsExtension extends Extension
 
         $container->setParameter('jenkins.endpoint', $config['endpoint']);
         $container->setParameter('jenkins.builds.summary.rss_uri', $config['endpoint'] . '/rssAll');
+        $container->setParameter('jenkins.builds.commits.rss_uri', $config['endpoint'] . '/rssChangelog');
     }
 
     public function getNamespace()

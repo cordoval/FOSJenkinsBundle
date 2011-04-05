@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use FOS\Bundle\JenkinsBundle\Logger\Build\BuildsSummaryLogger;
+use FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory;
 
 /**
  * The JenkinsDataCollector collector class collects builds information
@@ -29,9 +29,9 @@ class JenkinsDataCollector extends DataCollector
     /**
      * The BuildsSummaryLogger instance.
      *
-     * @var \FOS\Bundle\JenkinsBundle\Logger\Build\BuildsSummaryLogger
+     * @var \FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory
      */
-    private $logger;
+    private $history;
 
     /**
      * The Jenkins project endpoint
@@ -43,12 +43,12 @@ class JenkinsDataCollector extends DataCollector
     /**
      * Constructor.
      *
-     * @param BuildsSummaryLogger $logger A BuildsSummaryLogger instance
+     * @param BuildHistory $history A BuildHistory instance
      * @param string $endpoint A Jenkins project endpoint
      */
-    public function __construct(BuildsSummaryLogger $logger, $endpoint)
+    public function __construct(BuildHistory $history, $endpoint)
     {
-        $this->logger = $logger;
+        $this->history = $history;
         $this->endpoint = $endpoint;
     }
 
@@ -58,12 +58,22 @@ class JenkinsDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = array(
-            'builds'         => $this->logger->getBuildsSummary(),
-            'builds_success' => $this->logger->getLastSuccessfullBuildsCount(),
-            'builds_failed'  => $this->logger->getLastFailedBuildsCount(),
+            'builds'         => $this->history->getBuilds(),
+            'builds_success' => $this->history->getLastSuccessfullBuildsCount(),
+            'builds_failed'  => $this->history->getLastFailedBuildsCount(),
         );
 
         $this->data['endpoint'] = $this->endpoint;
+    }
+
+    /**
+     * Returns the last build instance.
+     *
+     * @return FOS\Bundle\JenkinsBundle\BuildAnalysis\Build
+     */
+    public function getLastBuild()
+    {
+        return $this->data['builds'][0];
     }
 
     /**
@@ -73,7 +83,7 @@ class JenkinsDataCollector extends DataCollector
      */
     public function isLastBuildSuccessfull()
     {
-        return (Boolean) $this->data['builds'][0]['success'];
+        return (Boolean) $this->getLastBuild()->isSucceeded();
     }
 
     /**
@@ -83,7 +93,7 @@ class JenkinsDataCollector extends DataCollector
      */
     public function getLastBuildNumber()
     {
-        return $this->data['builds'][0]['id'];
+        return $this->getLastBuild()->getNumber();
     }
 
     /**
@@ -134,14 +144,13 @@ class JenkinsDataCollector extends DataCollector
      */
     public function getBuild($number)
     {
-        $match = null;
         foreach ($this->data['builds'] as $build) {
-            if ($build['id'] == $number) {
-                $match = $build;
+            if ($build->getNumber() == $number) {
+                return $build;
             }
         }
 
-        return $match;
+        return null;
     }
 
     /**

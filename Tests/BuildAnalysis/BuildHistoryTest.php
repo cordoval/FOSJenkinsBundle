@@ -11,9 +11,9 @@
 
 namespace FOS\Bundle\JenkinsBundle\Tests\Logger\Build;
 
-use FOS\Bundle\JenkinsBundle\Logger\Build\BuildsSummaryLogger;
+use FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory;
 
-class BuildsSummaryLoggerTest extends \PHPUnit_Framework_TestCase
+class BuildHistoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \SimpleXmlElement
@@ -22,7 +22,7 @@ class BuildsSummaryLoggerTest extends \PHPUnit_Framework_TestCase
 
     protected function setup()
     {
-        $this->xml = new \SimpleXmlElement(file_get_contents(__DIR__.'/../../Fixtures/last-builds.xml'));
+        $this->xml = new \SimpleXmlElement(file_get_contents(__DIR__.'/../Fixtures/last-builds.xml'));
     }
 
     protected function tearDown()
@@ -32,13 +32,13 @@ class BuildsSummaryLoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetBuildsSummary()
     {
-        $logger = new BuildsSummaryLogger($this->xml);
+        $logger = new BuildHistory($this->xml);
         $this->assertEquals(10, count($logger->getBuildsSummary()));
     }
 
     public function testIsBuildSuccessfull()
     {
-        $logger = new BuildsSummaryLogger($this->xml);
+        $logger = new BuildHistory($this->xml);
         $this->assertTrue($logger->isBuildSuccessfull('stable'));
         $this->assertTrue($logger->isBuildSuccessfull('back to normal'));
         $this->assertFalse($logger->isBuildSuccessfull('1 test started to fail'));
@@ -47,13 +47,13 @@ class BuildsSummaryLoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetLastSuccessfullBuildsCount()
     {
-        $logger = new BuildsSummaryLogger($this->xml);
+        $logger = new BuildHistory($this->xml);
         $this->assertEquals(9, $logger->getLastSuccessfullBuildsCount());
     }
 
     public function testGetLastFailedBuildsCount()
     {
-        $logger = new BuildsSummaryLogger($this->xml);
+        $logger = new BuildHistory($this->xml);
         $this->assertEquals(1, $logger->getLastFailedBuildsCount());
     }
 }

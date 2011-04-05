@@ -11,7 +11,7 @@
 
 namespace FOS\Bundle\JenkinsBundle\Tests\Logger\Build;
 
-use FOS\Bundle\JenkinsBundle\Logger\Build\BuildsSummaryLogger;
+use FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory;
 use FOS\Bundle\JenkinsBundle\DataCollector\JenkinsDataCollector;
 
 class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
@@ -24,7 +24,7 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
     protected function setup()
     {
         $this->endpoint = 'http://foo.com/bar';
-        $this->logger = new BuildsSummaryLogger(new  \SimpleXmlElement(file_get_contents(__DIR__.'/../Fixtures/last-builds.xml')));
+        $this->logger = new BuildHistory(new  \SimpleXmlElement(file_get_contents(__DIR__.'/../Fixtures/last-builds.xml')));
     }
 
     protected function tearDown()

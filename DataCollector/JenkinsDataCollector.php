@@ -15,23 +15,23 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use FOS\Bundle\JenkinsBundle\Logger\Build\BuildsSummaryLogger;
+use FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory;
 
 /**
  * The JenkinsDataCollector collector class collects builds information
  * from an RSS feed coming from the Jenkins continuous integration server.
  *
  * @author Hugo Hamon <hugo.hamon@sensio.com>
- * @author William DURAND <william.durand1@gmail.com>
+ * @author William Durand <william.durand1@gmail.com>
  */
 class JenkinsDataCollector extends DataCollector
 {
     /**
      * The BuildsSummaryLogger instance.
      *
-     * @var \FOS\Bundle\JenkinsBundle\Logger\Build\BuildsSummaryLogger
+     * @var \FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory
      */
-    private $logger;
+    private $history;
 
     /**
      * The Jenkins project endpoint
@@ -43,12 +43,12 @@ class JenkinsDataCollector extends DataCollector
     /**
      * Constructor.
      *
-     * @param BuildsSummaryLogger $logger A BuildsSummaryLogger instance
+     * @param BuildHistory $history A BuildHistory instance
      * @param string $endpoint A Jenkins project endpoint
      */
-    public function __construct(BuildsSummaryLogger $logger, $endpoint)
+    public function __construct(BuildHistory $history, $endpoint)
     {
-        $this->logger = $logger;
+        $this->history = $history;
         $this->endpoint = $endpoint;
     }
 
@@ -58,9 +58,9 @@ class JenkinsDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = array(
-            'builds'         => $this->logger->getBuildsSummary(),
-            'builds_success' => $this->logger->getLastSuccessfullBuildsCount(),
-            'builds_failed'  => $this->logger->getLastFailedBuildsCount(),
+            'builds'         => $this->history->getBuildsSummary(),
+            'builds_success' => $this->history->getLastSuccessfullBuildsCount(),
+            'builds_failed'  => $this->history->getLastFailedBuildsCount(),
         );
 
         $this->data['endpoint'] = $this->endpoint;

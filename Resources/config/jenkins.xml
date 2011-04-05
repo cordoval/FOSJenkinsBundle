@@ -6,18 +6,18 @@
 
     <parameters>
         <parameter key="jenkins.data_collector.class">FOS\Bundle\JenkinsBundle\DataCollector\JenkinsDataCollector</parameter>
-        <parameter key="jenkins.logger.builds_summary_class">FOS\Bundle\JenkinsBundle\Logger\Build\BuildsSummaryLogger</parameter>
+        <parameter key="jenkins.logger.build_history_class">FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory</parameter>
     </parameters>
 
     <services>
 
         <service id="data_collector.jenkins" class="%jenkins.data_collector.class%" public="false">
             <tag name="data_collector" template="FOSJenkinsBundle:Collector:jenkins" id="jenkins" />
-            <argument type="service" id="jenkins.logger.builds_summary" />
+            <argument type="service" id="jenkins.logger.build_history" />
             <argument>%jenkins.endpoint%</argument>
         </service>
 
-        <service id="jenkins.logger.builds_summary" class="%jenkins.logger.builds_summary_class%" public="false">
+        <service id="jenkins.logger.build_history" class="%jenkins.logger.build_history_class%" public="false">
             <argument type="service" id="jenkins.rss.builds.parser"/>
         </service>
 

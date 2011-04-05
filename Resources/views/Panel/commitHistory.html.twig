@@ -3,25 +3,32 @@
 <table summary="Last SCM logs history coming from Jenkins' logs">
     <thead>
         <tr>
-            <th style="text-align: center">#ID</th>
+            <th>Build</th>
             <th>Commit message</th>
             <th>Author</th>
             <th>Date</th>
         </tr>
     </thead>
     <tbody>
-    {% for commit in collector.commits %}
+    {% for commit in commits %}
         <tr>
             <td style="text-align: center; width: 40px">
-                #{{ commit.build_id }}
+                #{{ commit.build }}
             </td>
             <td>{{ commit.message }}</td>
             <td>{{ commit.author }}</td>
             <td>{{ commit.date|date('d M. Y H:i') }}</td>
         </tr>
-        <tr>
-            <td colspan="4">
-                {{ commit.details }}
+        <tr class="commit_files">
+            <td colspan="1" style="text-align: center; width: 40px">
+                {{ commit.files|length }}
+            </td>
+            <td colspan="3">
+                <ul>
+                    <li>
+                        {{ commit.files|join("</li><li>\n")|raw }}
+                    </li>
+                </ul>
             </td>
         </tr>
     {% endfor %}

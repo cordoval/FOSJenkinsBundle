@@ -30,18 +30,14 @@
 {% endblock %}
 
 {% block panel %}
-    <h2>Last results</2>
-
-    <div style="text-align:center;">
-        <p>Tests trend</p>
-        <img src="{{ collector.endpoint }}/test/trend" />
-    </div>
 
     <h2>Builds History</h2>
 
-    <ul>
-        <li><a href="#">Builds history</a></li>
-        <li><a href="#">SCM logs</a></li>
+    {% set panel_uri = path('_profiler', { 'token': token, 'panel': 'jenkins' }) %}
+
+    <ul id="jenkins_menu">
+        <li><a href="{{ panel_uri }}">Builds history</a></li>
+        <li><a href="{{ panel_uri }}&amp;subpanel=commits">Commits logs</a></li>
         <li><a href="#">Unit tests</a></li>
         <li><a href="#">Code coverage</a></li>
         <li><a href="#">PMD</a></li>
@@ -51,13 +47,14 @@
     </ul>
 
     <style type="text/css">
-        #collector_content ul li { display: inline }
+        #jenkins_menu { margin-bottom: 25px }
+        #jenkins_menu li { display: inline; margin: 5px }
     </style>
 
     {% set subpanel = app.request.query.get('subpanel') %}
 
-    {% if 'scm' == subpanel %}
-        {% include 'FOSJenkinsBundle:Collector:scm.html.twig' with { 'collector': collector } only %}
+    {% if 'commits' == subpanel %}
+        {% render 'FOSJenkinsBundle:BuildAnalysis:commitHistory' with { 'collector': collector } %}
     {% else %}
         {% include 'FOSJenkinsBundle:Collector:history.html.twig' with { 'collector': collector } only %}
     {% endif %}

@@ -59,7 +59,7 @@ class JenkinsDataCollector extends DataCollector
         $this->data = array(
             'builds'         => $this->logger->getBuildsSummary(),
             'builds_success' => $this->logger->getLastSuccessfullBuildsCount(),
-            'builds_failed'  => 0,
+            'builds_failed'  => $this->logger->getLastFailedBuildsCount(),
         );
 
         $this->data['endpoint'] = $this->endpoint;

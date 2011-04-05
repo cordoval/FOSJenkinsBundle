@@ -21,6 +21,7 @@ use Symfony\Component\Config\FileLocator;
  * FOSJenkinsExtension.
  *
  * @author Hugo Hamon <hugo.hamon@sensio.com>
+ * @author William DURAND <william.durand1@gmail.com>
  */
 class FOSJenkinsExtension extends Extension
 {
@@ -34,7 +35,8 @@ class FOSJenkinsExtension extends Extension
         $processor = new Processor();
         $config = $processor->process($configuration->getConfigTree(), $configs);
 
-        $container->setParameter('jenkins.builds.summary.rss_uri', $config['builds']['summary']['rss_uri']);
+        $container->setParameter('jenkins.endpoint', $config['endpoint']);
+        $container->setParameter('jenkins.builds.summary.rss_uri', $config['endpoint'] . '/rssAll');
     }
 
     public function getNamespace()

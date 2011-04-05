@@ -24,8 +24,8 @@ Jenkins continuous integration server running.
 Jenkins authentification
 ------------------------
 
-If your Jenkins requires authentification, you will have to use the following format 
-for the `rss_uri` parameter:
+If your Jenkins requires authentification, you will have to use the following 
+format for the `endpoint` parameter:
 
     http://<login>:<password>@localhost:8080/job/Syndication/rssAll
 
@@ -84,20 +84,13 @@ directory of your Symfony2 installation.
 
     # app/config/config_dev.yml
     fos_jenkins:
-        builds:
-            summary:
-                # URI of the Jenkins RSS file that hosts the last builds history
-                rss_uri: http://localhost:8080/job/Syndication/rssAll
+        endpoint: http://localhost:8080/job/Syndication/rssAll
 
     --
 
     # app/config/config_test.yml
     fos_jenkins:
-        builds:
-            summary:
-                # URI of the Jenkins RSS file that hosts the last builds history
-                rss_uri: http://localhost:8080/job/Syndication/rssAll
-
+        endpoint: http://localhost:8080/job/Syndication/rssAll
 
 Don't forget to publish assets:
 

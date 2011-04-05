@@ -23,6 +23,7 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
 
     protected function setup()
     {
+        $this->endpoint = 'http://foo.com/bar';
         $this->logger = new BuildsSummaryLogger(new  \SimpleXmlElement(file_get_contents(__DIR__.'/../Fixtures/last-builds.xml')));
     }
 
@@ -36,7 +37,7 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
         $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
         $response = $this->getMock('Symfony\Component\HttpFoundation\Response');
 
-        $collector = new JenkinsDataCollector($this->logger);
+        $collector = new JenkinsDataCollector($this->logger, $this->endpoint);
         $this->assertEquals(0, count($collector->getBuilds()));
 
         $collector->collect($request, $response);
@@ -97,7 +98,7 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
         $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
         $response = $this->getMock('Symfony\Component\HttpFoundation\Response');
 
-        $collector = new JenkinsDataCollector($this->logger);
+        $collector = new JenkinsDataCollector($this->logger, $this->endpoint);
         $collector->collect($request, $response);
 
         return $collector;

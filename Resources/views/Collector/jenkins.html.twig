@@ -30,6 +30,13 @@
 {% endblock %}
 
 {% block panel %}
+    <h2>Last results</2>
+
+    <div style="text-align:center;">
+        <p>Tests trend</p>
+        <img src="{{ collector.endpoint }}/test/trend" />
+    </div>
+
     <h2>Builds History</h2>
 
     <table summary="Last builds history coming from Jenkins' logs">
@@ -60,5 +67,14 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <h2>Actions</h2>
+
+    <p>
+        <ul>
+            <li><a href="{{ collector.endpoint }}/build?delay=0">Launch a new build</a></li>
+            <li><a href="{{ collector.endpoint }}/ws" target="_blank">See workspace</a></li>
+        </ul>
+    </p>
 
 {% endblock %}

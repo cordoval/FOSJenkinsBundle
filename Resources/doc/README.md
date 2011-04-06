@@ -27,7 +27,7 @@ Jenkins authentification
 If your Jenkins requires authentification, you will have to use the following format
 for the `endpoint` parameter:
 
-    http://<login>:<password>@localhost:8080/job/Syndication/rssAll
+    http://<login>:<password>@localhost:8080/job/<projectName>
 
 Installation
 ------------
@@ -84,13 +84,13 @@ directory of your Symfony2 installation.
 
     # app/config/config_dev.yml
     fos_jenkins:
-        endpoint: http://localhost:8080/job/Syndication/rssAll
+        endpoint: http://localhost:8080/job/myProject
 
     --
 
     # app/config/config_test.yml
     fos_jenkins:
-        endpoint: http://localhost:8080/job/Syndication/rssAll
+        endpoint: http://localhost:8080/job/myProject
 
 Don't forget to publish assets:
 

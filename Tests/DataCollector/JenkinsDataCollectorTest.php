@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\Bundle\JenkinsBundle\Tests\Logger\Build;
+namespace FOS\Bundle\JenkinsBundle\Tests\DataCollector;
 
 use FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory;
 use FOS\Bundle\JenkinsBundle\DataCollector\JenkinsDataCollector;
@@ -20,13 +20,15 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
      * @var \SimpleXmlElement
      */
     private $xml;
+
     /**
+     * @var string
      */
-    private $endpoint = 'http://localhost:8080';
+    private $endpoint;
 
     protected function setup()
     {
-        $this->endpoint = 'http://foo.com/bar';
+        $this->endpoint = 'http://localhost:8080/job/Project/';
         $this->logger = new BuildHistory(new  \SimpleXmlElement(file_get_contents(__DIR__.'/../Fixtures/last-builds.xml')));
     }
 
@@ -94,6 +96,12 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
     {
         $collector = $this->getCollector();
         $this->assertEquals('jenkins', $collector->getName());
+    }
+
+    public function testGetEndPoint()
+    {
+        $collector = $this->getCollector();
+        $this->assertEquals('http://localhost:8080/job/Project/', $collector->getEndPoint());
     }
 
     private function getCollector()

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\Bundle\JenkinsBundle\Tests\Logger\Build;
+namespace FOS\Bundle\JenkinsBundle\Tests\BuildAnalysis;
 
 use FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory;
 
@@ -32,28 +32,34 @@ class BuildHistoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetBuilds()
     {
-        $logger = new BuildHistory($this->xml);
-        $this->assertEquals(10, count($logger->getBuilds()));
+        $history = new BuildHistory($this->xml);
+        $this->assertEquals(10, count($history->getBuilds()));
     }
 
     public function testIsBuildSuccessfull()
     {
-        $logger = new BuildHistory($this->xml);
-        $this->assertTrue($logger->isBuildSuccessfull('stable'));
-        $this->assertTrue($logger->isBuildSuccessfull('back to normal'));
-        $this->assertFalse($logger->isBuildSuccessfull('1 test started to fail'));
-        $this->assertFalse($logger->isBuildSuccessfull('2 tests started to fail'));
+        $history = new BuildHistory($this->xml);
+        $this->assertTrue($history->isBuildSuccessfull('stable'));
+        $this->assertTrue($history->isBuildSuccessfull('back to normal'));
+        $this->assertFalse($history->isBuildSuccessfull('1 test started to fail'));
+        $this->assertFalse($history->isBuildSuccessfull('2 tests started to fail'));
     }
 
     public function testGetLastSuccessfullBuildsCount()
     {
-        $logger = new BuildHistory($this->xml);
-        $this->assertEquals(9, $logger->getLastSuccessfullBuildsCount());
+        $history = new BuildHistory($this->xml);
+        $this->assertEquals(9, $history->getLastSuccessfullBuildsCount());
     }
 
     public function testGetLastFailedBuildsCount()
     {
-        $logger = new BuildHistory($this->xml);
-        $this->assertEquals(1, $logger->getLastFailedBuildsCount());
+        $history = new BuildHistory($this->xml);
+        $this->assertEquals(1, $history->getLastFailedBuildsCount());
+    }
+
+    public function testGetMostRecentBuild()
+    {
+        $history = new BuildHistory($this->xml);
+        $this->assertEquals(28, $history->getMostRecentBuild()->getNumber());
     }
 }

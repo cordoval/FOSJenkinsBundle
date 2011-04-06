@@ -35,7 +35,7 @@ class CommitHistoryTest extends \PHPUnit_Framework_TestCase
         $history = new CommitHistory($this->xml);
         $commits = $history->getCommits();
 
-        $this->assertEquals(23, count($history->getCommits()));
+        $this->assertEquals(23, count($commits));
         $this->assertEquals(28, $commits[0]->getBuild());
     }
 }

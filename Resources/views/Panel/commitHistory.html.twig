@@ -10,8 +10,8 @@
         </tr>
     </thead>
     <tbody>
-    {% for commit in commits %}
-        <tr>
+    {% for i, commit in commits %}
+        <tr class="highlight">
             <td style="text-align: center; width: 40px">
                 #{{ commit.build }}
             </td>
@@ -19,16 +19,12 @@
             <td>{{ commit.author }}</td>
             <td>{{ commit.date|date('d M. Y H:i') }}</td>
         </tr>
-        <tr class="commit_files">
+        <tr>
             <td colspan="1" style="text-align: center; width: 40px">
-                {{ commit.files|length }}
+                <img src="{{ asset('/bundles/fosjenkins/images/icons/file.png') }}" alt=""/>
             </td>
             <td colspan="3">
-                <ul>
-                    <li>
-                        {{ commit.files|join("</li><li>\n")|raw }}
-                    </li>
-                </ul>
+                <pre>{{ commit.files|join("\n") }}</pre>
             </td>
         </tr>
     {% endfor %}

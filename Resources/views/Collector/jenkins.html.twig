@@ -32,6 +32,11 @@
 
 {% block panel %}
 
+    {% block head %}
+        {{ parent() }}
+        <link href="{{ asset('bundles/fosjenkins/css/jenkins.css') }}" rel="stylesheet" type="text/css" media="screen" />
+    {% endblock %}
+
     <h2>Builds History</h2>
 
     {% set panel_uri = path('_profiler', { 'token': token, 'panel': 'jenkins' }) %}

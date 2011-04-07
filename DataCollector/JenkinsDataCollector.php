@@ -57,33 +57,76 @@ class JenkinsDataCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
+        $data = json_decode(file_get_contents(sprintf('%s/api/json', $this->endpoint)));
+
         $this->data = array(
-            'builds'         => $this->history->getBuilds(),
-            'builds_success' => $this->history->getLastSuccessfullBuildsCount(),
-            'builds_failed'  => $this->history->getLastFailedBuildsCount(),
+            'project.endpoint'         => $this->endpoint,
+            'project.name'             => $data->name,
+            'project.display_name'     => $data->displayName,
+            'project.description'      => $data->description,
+            'project.url'              => $data->url,
+            'project.buildable'        => $data->buildable,
+            'builds.count'             => count($data->builds),
+            'builds.first'             => $data->firstBuild->number,
+            'builds.last'              => $data->lastBuild->number,
+            'builds.last.completed'    => $data->lastCompletedBuild->number,
+            'builds.last.failed'       => $data->lastFailedBuild->number,
+            'builds.last.stable'       => $data->lastStableBuild->number,
+            'builds.last.successful'   => $data->lastSuccessfulBuild->number,
+            'builds.last.unstable'     => $data->lastUnstableBuild->number,
+            'builds.last.unsuccessful' => $data->lastUnsuccessfulBuild->number,
+            'builds.next'              => $data->nextBuildNumber,
         );
 
-        $this->data['endpoint'] = $this->endpoint;
+        $lastBuild = json_decode(file_get_contents(sprintf('%s/%u/api/json', $this->endpoint, $data->lastBuild->number)));
+
+        $tests = array_pop($lastBuild->actions);
+
+        $this->data = array_merge($this->data, array(
+            'tests.failed_count'  => $tests->failCount,
+            'tests.skipped_count' => $tests->skipCount,
+            'tests.total_count'   => $tests->totalCount,
+        ));
     }
 
-    /**
-     * Returns the most recent build instance.
-     *
-     * @return FOS\Bundle\JenkinsBundle\BuildAnalysis\Build
-     */
-    public function getMostRecentBuild()
+    private function get($key)
     {
-        return $this->data['builds'][0];
+        return array_key_exists($key, $this->data) ? $this->data[$key] : null;
     }
 
-    /**
-     * Returns whether or not the last build of the history is successfull.
-     *
-     * @return Boolean
-     */
-    public function isLastBuildSuccessfull()
+    public function getProjectName()
     {
-        return (Boolean) $this->getMostRecentBuild()->isSucceeded();
+        return $this->get('project.name');
+    }
+
+    public function getDisplayName()
+    {
+        return $this->get('project.display_name');
+    }
+
+    public function getDescription()
+    {
+        return $this->get('project.description');
+    }
+
+    public function getUrl()
+    {
+        return $this->get('project.url');
+    }
+
+    public function isBuildable()
+    {
+        return $this->get('project.buildable');
+    }
+
+    public function getBuildsCount()
+    {
+        return $this->get('builds.count');
+    }
+
+    public function getFirstBuild()
+    {
+        return $this->get('builds.first');
     }
 
     /**
@@ -91,66 +134,94 @@ class JenkinsDataCollector extends DataCollector
      *
      * @return integer
      */
-    public function getLastBuildNumber()
+    public function getLastBuild()
     {
-        return $this->getMostRecentBuild()->getNumber();
+        return $this->get('builds.last');
+    }
+
+    public function getLastCompletedBuild()
+    {
+        return $this->get('builds.last.completed');
+    }
+
+    public function getLastFailedBuild()
+    {
+        return $this->get('builds.last.failed');
+    }
+
+    public function getLastStableBuild()
+    {
+        return $this->get('builds.last.stable');
+    }
+
+    public function getLastSuccessfulBuild()
+    {
+        return $this->get('builds.last.successful');
+    }
+
+    public function getLastUnsuccessfulBuild()
+    {
+        return $this->get('builds.last.unsuccessful');
+    }
+
+    public function getLastUnstableBuild()
+    {
+        return $this->get('builds.last.unstable');
+    }
+
+    public function getNextBuild()
+    {
+        return $this->get('builds.next');
     }
 
     /**
-     * Returns the number of successfull builds.
-     *
-     * @return integer
-     */
-    public function getSuccessfullBuildsCount()
-    {
-        return $this->data['builds_success'];
-    }
-
-    /**
-     * Returns the number of failed builds.
-     *
-     * @return integer
-     */
-    public function getFailedBuildsCount()
-    {
-        return $this->data['builds_failed'];
-    }
-
-    /**
-     * Returns whether or not there are some failed builds in the history.
+     * Returns whether or not the last build of the history is successful.
      *
      * @return Boolean
      */
-    public function hasFailedBuilds()
+    public function isLastBuildSuccessful()
     {
-        return $this->getFailedBuildsCount() > 0;
+        return $this->getLastBuild() === $this->getLastSuccessfulBuild();
     }
 
     /**
-     * Returns a collection of the last recorded builds.
+     * Returns the number of failed tests.
      *
-     * @return array The builds history
+     * @return integer
      */
-    public function getBuilds()
+    public function getFailedTestsCount()
     {
-        return $this->data['builds'];
+        return (string) $this->get('tests.failed_count');
     }
 
     /**
-     * Returns a build information from its single identifier.
+     * Returns the number of skipped tests.
      *
-     * @param  integer    $number The build number
-     * @return array|null $match  The build data
+     * @return integer
      */
-    public function getBuild($number)
+    public function getSkippedTestsCount()
     {
-        foreach ($this->data['builds'] as $build) {
-            if ($build->getNumber() == $number) {
-                return $build;
-            }
-        }
+        return (string) $this->get('tests.skipped_count');
+    }
 
-        return null;
+    /**
+     * Returns the total number of tests.
+     *
+     * @return integer
+     */
+    public function getTotalTestsCount()
+    {
+        return $this->get('tests.total_count');
+    }
+
+    /**
+     * Returns the number of successful tests.
+     *
+     * @return integer
+     */
+    public function getPassedTestsCount()
+    {
+        return $this->getTotalTestsCount() - $this->getFailedTestsCount();
     }
 
     /**
@@ -160,7 +231,7 @@ class JenkinsDataCollector extends DataCollector
      */
     public function getEndPoint()
     {
-        return $this->data['endpoint'];
+        return $this->get('project.endpoint');
     }
 
     /**

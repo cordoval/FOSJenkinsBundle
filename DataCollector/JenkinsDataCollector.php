@@ -123,7 +123,7 @@ class JenkinsDataCollector extends DataCollector
             $this->collectJobData();
         }
 
-        if ($this->jobTestSuiteParser && $this->lastBuilReportUri) {
+        if ($this->jobTestSuiteParser && $this->lastBuildReportUri) {
             $this->collectTestSuiteData();
         }
     }

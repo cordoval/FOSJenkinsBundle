@@ -95,3 +95,26 @@ directory of your Symfony2 installation.
 Don't forget to publish assets:
 
     $ php app/console assets:install --symlink web
+
+Run the Tests Suite
+-------------------
+
+If you want to run the PHPUnit tests suite to verify the bundle is able to run
+on your configuration, you can simply execute the following command:
+
+    $ cd /path/to/vendor/bundles/FOS/Bundle/JenkinsBundle
+    $ phpunit -c phpunit.xml.dist --coverage-html ./build
+
+The `--coverage-html` option will generate a set of html files under a newly
+created `build/` directory. Open the `build/index.html` file to watch the code
+coverage analysis of the `JenkinsBundle` bundle.
+
+Contributing to the JenkinsBundle
+---------------------------------
+
+If you wish to contribute back to this bundle, feel free to fork the
+`hhamon/FOSJenkinsBundle` git repository on Github.com and submit your pull
+requests to the repository owner.
+
+Don't forget to attach unit tests files and maintain the unit tests suite green
+everytime your pull a request to the owner.

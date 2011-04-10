@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\Bundle\JenkinsBundle\Tests\Parser;
+namespace FOS\Bundle\JenkinsBundle\Tests\ReportParser;
 
-use FOS\Bundle\JenkinsBundle\Parser\JobDataParser;
+use FOS\Bundle\JenkinsBundle\ReportParser\ProjectReportParser;
 
-class JobDataParserTest extends \PHPUnit_Framework_TestCase
+class ProjectReportParserTest extends \PHPUnit_Framework_TestCase
 {
     private $parser;
 
     protected function setup()
     {
-        $this->parser = new JobDataParser();
+        $this->parser = new ProjectReportParser();
         $this->parser->setPath(__DIR__.'/../Fixtures/builds-summary.json');
         $this->parser->parse();
     }
@@ -56,7 +56,7 @@ class JobDataParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseThrowsRuntimeException()
     {
-        $parser = new JobDataParser();
+        $parser = new ProjectReportParser();
         $parser->setPath(__DIR__.'/../Fixtures/fake.txt');
         $parser->parse();
     }

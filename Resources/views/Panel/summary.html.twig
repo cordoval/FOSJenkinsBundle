@@ -41,6 +41,35 @@
     </tbody>
 </table>
 
+<h2><abbr title="Source Code Management">SCM</abbr> Tool</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Type</th>
+            <td>{{ collector.scmToolType }}</td>
+        </tr>
+        <tr>
+            <th>Remote repository</th>
+            <td>{{ collector.scmRepositoryUrl }}</td>
+        </tr>
+        <tr>
+            <th>Latest commit</th>
+            <td>{{ collector.scmLatestCommit }}</td>
+        </tr>
+        <tr>
+            <th>Latest committed files</th>
+            <td>{{ collector.scmLatestCommittedFiles }}</td>
+        </tr>
+    </tbody>
+</table>
+
 <h2>Builds Statistics</h2>
 
 <table>

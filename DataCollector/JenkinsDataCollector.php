@@ -15,8 +15,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use FOS\Bundle\JenkinsBundle\Parser\JobDataParser;
-use FOS\Bundle\JenkinsBundle\Parser\JobTestSuiteParser;
+use FOS\Bundle\JenkinsBundle\ReportParser\ReportParserInterface;
 
 /**
  * The JenkinsDataCollector collector class collects builds information
@@ -35,18 +34,11 @@ class JenkinsDataCollector extends DataCollector
     private $endpoint;
 
     /**
-     * A JobDataParser instance.
+     * An array of registered ReportParserInterface instance.
      *
-     * @var FOS\Bundle\JenkinsBundle\Parser\JobDataParser
+     * @var array
      */
-    private $jobDataParser;
-
-    /**
-     * A JobTestSuiteParser instance.
-     *
-     * @var FOS\Bundle\JenkinsBundle\Parser\JobTestSuiteParser
-     */
-    private $jobTestSuiteParser;
+    private $reports;
 
     /**
      * Constructor.
@@ -59,23 +51,14 @@ class JenkinsDataCollector extends DataCollector
     }
 
     /**
-     * Sets the JobDataParser instance.
+     * Registers a new ReportParserInterface instance.
      *
-     * @param JobDataParser $parser
+     * @param string $name Name of the ReportParser instance
+     * @param ReportParserInterface $report The parser to register
      */
-    public function setJobDataParser(JobDataParser $parser)
+    public function registerReportParser($name, ReportParserInterface $report)
     {
-        $this->jobDataParser = $parser;
-    }
-
-    /**
-     * Sets the JobTestSuiteParser instance.
-     *
-     * @param JobDataParser $parser
-     */
-    public function setJobTestSuiteParser(JobTestSuiteParser $parser)
-    {
-        $this->jobTestSuiteParser = $parser;
+        $this->reports[$name] = $report;
     }
 
     /**
@@ -85,14 +68,9 @@ class JenkinsDataCollector extends DataCollector
     {
         $this->data['job.endpoint'] = $this->endpoint;
 
-        if ($this->jobDataParser) {
-            $this->jobDataParser->parse();
-            $this->data = array_merge($this->data, $this->jobDataParser->getData());
-        }
-
-        if ($this->jobTestSuiteParser) {
-            $this->jobTestSuiteParser->parse();
-            $this->data = array_merge($this->data, $this->jobTestSuiteParser->getData());
+        foreach ($this->reports as $report) {
+            $report->parse();
+            $this->data = array_merge($this->data, $report->getData());
         }
     }
 

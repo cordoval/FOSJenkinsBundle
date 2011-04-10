@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\Bundle\JenkinsBundle\Parser;
+namespace FOS\Bundle\JenkinsBundle\ReportParser;
 
 use FOS\Bundle\JenkinsBundle\BuildAnalysis\TestSuite;
 
 /**
- * The JobTestSuiteParser class gets test suite data from a JSON output sent by
- * the Jenkins' API tool and converts to a pure PHP associative array.
+ * The SingleBuildReportParser class gets test suite data from a JSON output
+ * sent by the Jenkins' API tool and converts to a pure PHP associative array.
  *
  * @author Hugo Hamon <hugo.hamon@sensio.com>
  */
-class JobTestSuiteParser extends JenkinsReportParser
+class SingleBuildReportParser extends ReportParser
 {
     /**
      * {@inheritDoc}

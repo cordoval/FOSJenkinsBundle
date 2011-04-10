@@ -11,9 +11,10 @@
 
 namespace FOS\Bundle\JenkinsBundle\Tests\DataCollector;
 
-use FOS\Bundle\JenkinsBundle\Parser\JobDataParser;
-use FOS\Bundle\JenkinsBundle\Parser\JobTestSuiteParser;
 use FOS\Bundle\JenkinsBundle\DataCollector\JenkinsDataCollector;
+use FOS\Bundle\JenkinsBundle\ReportParser\ReportParserInterface;
+use FOS\Bundle\JenkinsBundle\ReportParser\ProjectReportParser;
+use FOS\Bundle\JenkinsBundle\ReportParser\SingleBuildReportParser;
 
 class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,15 +22,15 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
 
     protected function setup()
     {
-        $jobDataParser = new JobDataParser();
-        $jobDataParser->setPath(__DIR__.'/../Fixtures/builds-summary.json');
+        $projectReportParser = new ProjectReportParser();
+        $projectReportParser->setPath(__DIR__.'/../Fixtures/builds-summary.json');
 
-        $testSuiteParser = new JobTestSuiteParser();
-        $testSuiteParser->setPath(__DIR__.'/../Fixtures/build.json');
+        $buildReportParser = new SingleBuildReportParser();
+        $buildReportParser->setPath(__DIR__.'/../Fixtures/build.json');
 
         $collector = new JenkinsDataCollector('http://localhost:8080/job/Syndication/');
-        $collector->setJobDataParser($jobDataParser);
-        $collector->setJobTestSuiteParser($testSuiteParser);
+        $collector->registerReportParser('project', $projectReportParser);
+        $collector->registerReportParser('build', $buildReportParser);
 
         $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
         $response = $this->getMock('Symfony\Component\HttpFoundation\Response');

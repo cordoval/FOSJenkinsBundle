@@ -11,15 +11,15 @@
 
 namespace FOS\Bundle\JenkinsBundle\Tests\Parser;
 
-use FOS\Bundle\JenkinsBundle\Parser\JobTestSuiteParser;
+use FOS\Bundle\JenkinsBundle\ReportParser\SingleBuildReportParser;
 
-class JobTestSuiteParserTest extends \PHPUnit_Framework_TestCase
+class SingleBuildReportParserTest extends \PHPUnit_Framework_TestCase
 {
     private $parser;
 
     protected function setup()
     {
-        $this->parser = new JobTestSuiteParser();
+        $this->parser = new SingleBuildReportParser();
         $this->parser->setPath(__DIR__.'/../Fixtures/build.json');
         $this->parser->parse();
     }
@@ -46,7 +46,7 @@ class JobTestSuiteParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseThrowsRuntimeExceptionForNonJsonOutput()
     {
-        $parser = new JobTestSuiteParser();
+        $parser = new SingleBuildReportParser();
         $parser->setPath(__DIR__.'/../Fixtures/fake.txt');
         $parser->parse();
     }
@@ -56,7 +56,7 @@ class JobTestSuiteParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseThrowsRuntimeExceptionForInvalidJsonOutput()
     {
-        $parser = new JobTestSuiteParser();
+        $parser = new SingleBuildReportParser();
         $parser->setPath(__DIR__.'/../Fixtures/invalid.json');
         $parser->parse();
     }

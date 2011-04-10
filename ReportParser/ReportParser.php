@@ -9,15 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\Bundle\JenkinsBundle\Parser;
+namespace FOS\Bundle\JenkinsBundle\ReportParser;
 
 /**
- * The JenkinsReportParser stores common methods for its concrete inherited
- * classes.
+ * The ReportParser stores common methods for its concrete inherited classes.
  *
  * @author Hugo Hamon <hugo.hamon@sensio.com>
  */
-abstract class JenkinsReportParser implements JenkinsReportParserInterface
+abstract class ReportParser implements ReportParserInterface
 {
     /**
      * An uri to the data to parse.

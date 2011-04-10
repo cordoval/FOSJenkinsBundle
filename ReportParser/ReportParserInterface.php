@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\Bundle\JenkinsBundle\Parser;
+namespace FOS\Bundle\JenkinsBundle\ReportParser;
 
 /**
- * The JenkinsReportParserInterface defines how report parsers must behave.
+ * The ReportParserInterface defines how report parsers must behave.
  *
  * @author Hugo Hamon <hugo.hamon@sensio.com>
  */
-interface JenkinsReportParserInterface
+interface ReportParserInterface
 {
     /**
      * Sets the path to the string to parse.

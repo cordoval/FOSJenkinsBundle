@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\Bundle\JenkinsBundle\Parser;
+namespace FOS\Bundle\JenkinsBundle\ReportParser;
 
 /**
- * The JobDataParser class gets data from a JSON output sent by the Jenkins' API
- * tool and converts to a pure PHP associative array.
+ * The ProjectReportParser class gets data from a JSON output sent by the
+ * Jenkins' API tool and converts to a pure PHP associative array.
  *
  * @author Hugo Hamon <hugo.hamon@sensio.com>
  */
-class JobDataParser extends JenkinsReportParser
+class ProjectReportParser extends ReportParser
 {
     /**
      * {@inheritDoc}

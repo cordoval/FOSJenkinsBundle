@@ -15,24 +15,18 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory;
+use FOS\Bundle\JenkinsBundle\Parser\JobDataParser;
+use FOS\Bundle\JenkinsBundle\Parser\JobTestSuiteParser;
 
 /**
  * The JenkinsDataCollector collector class collects builds information
- * from an RSS feed coming from the Jenkins continuous integration server.
+ * from several sources coming from the Jenkins continuous integration server.
  *
  * @author Hugo Hamon <hugo.hamon@sensio.com>
  * @author William Durand <william.durand1@gmail.com>
  */
 class JenkinsDataCollector extends DataCollector
 {
-    /**
-     * The BuildsSummaryLogger instance.
-     *
-     * @var \FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory
-     */
-    private $history;
-
     /**
      * The Jenkins project endpoint
      * 
@@ -41,15 +35,81 @@ class JenkinsDataCollector extends DataCollector
     private $endpoint;
 
     /**
+     * A JobDataParser instance.
+     *
+     * @var FOS\Bundle\JenkinsBundle\Parser\JobDataParser
+     */
+    private $jobDataParser;
+
+    /**
+     * A JobTestSuiteParser instance.
+     *
+     * @var FOS\Bundle\JenkinsBundle\Parser\JobTestSuiteParser
+     */
+    private $jobTestSuiteParser;
+
+    /**
+     * Uri to the project report.
+     *
+     * @var string
+     */
+    private $jobReportUri;
+
+    /**
+     * Uri to the last build report.
+     *
+     * @var string
+     */
+    private $lastBuildReportUri;
+
+    /**
      * Constructor.
      *
-     * @param BuildHistory $history A BuildHistory instance
      * @param string $endpoint A Jenkins project endpoint
      */
-    public function __construct(BuildHistory $history, $endpoint)
+    public function __construct($endpoint)
     {
-        $this->history = $history;
         $this->endpoint = $endpoint;
+    }
+
+    /**
+     * Sets the JobDataParser instance.
+     *
+     * @param JobDataParser $parser
+     */
+    public function setJobDataParser(JobDataParser $parser)
+    {
+        $this->jobDataParser = $parser;
+    }
+
+    /**
+     * Sets the uri to the project general information log.
+     *
+     * @param string $uri A path or uri to the project logs.
+     */
+    public function setJobReportUri($uri)
+    {
+        $this->jobReportUri = $uri;
+    }
+
+    /**
+     * Sets the JobTestSuiteParser instance.
+     *
+     * @param JobDataParser $parser
+     */
+    public function setJobTestSuiteParser(JobTestSuiteParser $parser)
+    {
+        $this->jobTestSuiteParser = $parser;
+    }
+
+    /**
+     * Sets the uri to the last build log.
+     *
+     * @param string $uri A path or uri to the last build logs.
+     */
+    public function setLastBuildReportUri($uri)
+    {
+        $this->lastBuilReportUri = $uri;
     }
 
     /**
@@ -57,76 +117,119 @@ class JenkinsDataCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $data = json_decode(file_get_contents(sprintf('%s/api/json', $this->endpoint)));
+        $this->data['job.endpoint'] = $this->endpoint;
 
-        $this->data = array(
-            'project.endpoint'         => $this->endpoint,
-            'project.name'             => $data->name,
-            'project.display_name'     => $data->displayName,
-            'project.description'      => $data->description,
-            'project.url'              => $data->url,
-            'project.buildable'        => $data->buildable,
-            'builds.count'             => count($data->builds),
-            'builds.first'             => $data->firstBuild->number,
-            'builds.last'              => $data->lastBuild->number,
-            'builds.last.completed'    => $data->lastCompletedBuild->number,
-            'builds.last.failed'       => $data->lastFailedBuild->number,
-            'builds.last.stable'       => $data->lastStableBuild->number,
-            'builds.last.successful'   => $data->lastSuccessfulBuild->number,
-            'builds.last.unstable'     => $data->lastUnstableBuild->number,
-            'builds.last.unsuccessful' => $data->lastUnsuccessfulBuild->number,
-            'builds.next'              => $data->nextBuildNumber,
-        );
+        if ($this->jobDataParser && $this->jobReportUri) {
+            $this->collectJobData();
+        }
 
-        $lastBuild = json_decode(file_get_contents(sprintf('%s/%u/api/json', $this->endpoint, $data->lastBuild->number)));
-
-        $tests = array_pop($lastBuild->actions);
-
-        $this->data = array_merge($this->data, array(
-            'tests.failed_count'  => $tests->failCount,
-            'tests.skipped_count' => $tests->skipCount,
-            'tests.total_count'   => $tests->totalCount,
-        ));
+        if ($this->jobTestSuiteParser && $this->lastBuilReportUri) {
+            $this->collectTestSuiteData();
+        }
     }
 
+    /**
+     * Collects general information on a Jenkins job.
+     *
+     */
+    private function collectJobData()
+    {
+        $this->jobDataParser->setPath($this->jobReportUri);
+        $this->jobDataParser->parse();
+
+        $this->data = array_merge($this->data, $this->jobDataParser->getData());
+    }
+
+    /**
+     * Collects statistics on the last executed test suite.
+     *
+     */
+    private function collectTestSuiteData()
+    {
+        $this->jobTestSuiteParser->setPath($this->lastBuilReportUri);
+        $this->jobTestSuiteParser->parse();
+
+        $this->data = array_merge($this->data, $this->jobTestSuiteParser->getData());
+    }
+
+    /**
+     * Returns a recorded statistic if it exists in the $data property.
+     *
+     * @return mixed|null
+     */
     private function get($key)
     {
         return array_key_exists($key, $this->data) ? $this->data[$key] : null;
     }
 
+    /**
+     * Returns the Jenkins project name.
+     *
+     * @return string
+     */
     public function getProjectName()
     {
-        return $this->get('project.name');
+        return $this->get('job.name');
     }
 
+    /**
+     * Returns the Jenkins display name.
+     *
+     * @return string
+     */
     public function getDisplayName()
     {
-        return $this->get('project.display_name');
+        return $this->get('job.display_name');
     }
 
+    /**
+     * Returns the Jenkins project description.
+     *
+     * @return string
+     */
     public function getDescription()
     {
-        return $this->get('project.description');
+        return $this->get('job.description');
     }
 
+    /**
+     * Returns the Jenkins project url.
+     *
+     * @return string
+     */
     public function getUrl()
     {
-        return $this->get('project.url');
+        return $this->get('job.url');
     }
 
+    /**
+     * Returns whether or not the job is buildable.
+     *
+     * @return Boolean
+     */
     public function isBuildable()
     {
-        return $this->get('project.buildable');
+        return $this->get('job.buildable');
     }
 
+    /**
+     * Returns the total number of builds.
+     *
+     * @return integer
+     */
     public function getBuildsCount()
     {
-        return $this->get('builds.count');
+        return $this->get('job.builds.count');
     }
 
+    /**
+     * Returns the number of the first build.
+     *
+     * @return integer
+     */
     public function getFirstBuild()
     {
-        return $this->get('builds.first');
+        return $this->get('job.builds.first');
     }
 
     /**
@@ -136,42 +239,77 @@ class JenkinsDataCollector extends DataCollector
      */
     public function getLastBuild()
     {
-        return $this->get('builds.last');
+        return $this->get('job.builds.last');
     }
 
+    /**
+     * Returns the last completed build number.
+     *
+     * @return integer
+     */
     public function getLastCompletedBuild()
     {
-        return $this->get('builds.last.completed');
+        return $this->get('job.builds.last_completed');
     }
 
+    /**
+     * Returns the last failed build number.
+     *
+     * @return integer
+     */
     public function getLastFailedBuild()
     {
-        return $this->get('builds.last.failed');
+        return $this->get('job.builds.last_failed');
     }
 
+    /**
+     * Returns the last stabled build number.
+     *
+     * @return integer
+     */
     public function getLastStableBuild()
     {
-        return $this->get('builds.last.stable');
+        return $this->get('job.builds.last_stable');
     }
 
+    /**
+     * Returns the last successful build number.
+     *
+     * @return integer
+     */
     public function getLastSuccessfulBuild()
     {
-        return $this->get('builds.last.successful');
+        return $this->get('job.builds.last_successful');
     }
 
+    /**
+     * Returns the last unsuccessful build number.
+     *
+     * @return integer
+     */
     public function getLastUnsuccessfulBuild()
     {
-        return $this->get('builds.last.unsuccessful');
+        return $this->get('job.builds.last_unsuccessful');
     }
 
+    /**
+     * Returns the last unstable build number.
+     *
+     * @return integer
+     */
     public function getLastUnstableBuild()
     {
-        return $this->get('builds.last.unstable');
+        return $this->get('job.builds.last_unstable');
     }
 
+    /**
+     * Returns the next build number.
+     *
+     * @return integer
+     */
     public function getNextBuild()
     {
-        return $this->get('builds.next');
+        return $this->get('job.builds.next');
     }
 
     /**
@@ -185,43 +323,53 @@ class JenkinsDataCollector extends DataCollector
     }
 
     /**
-     * Returns the number of failed tests.
+     * Returns the number of failed job tests.
      *
      * @return integer
      */
     public function getFailedTestsCount()
     {
-        return (string) $this->get('tests.failed_count');
+        return (string) $this->get('job.tests.failed_count');
     }
 
     /**
-     * Returns the number of skipped tests.
+     * Returns the number of skipped job tests.
      *
      * @return integer
      */
     public function getSkippedTestsCount()
     {
-        return (string) $this->get('tests.skipped_count');
+        return (string) $this->get('job.tests.skipped_count');
     }
 
     /**
-     * Returns the total number of tests.
+     * Returns the total number of job tests.
      *
      * @return integer
      */
     public function getTotalTestsCount()
     {
-        return $this->get('tests.total_count');
+        return $this->get('job.tests.total_count');
     }
 
     /**
-     * Returns the number of successful tests.
+     * Returns the rate of passed tests.
+     *
+     * @return float
+     */
+    public function getPassedTestsRate()
+    {
+        return $this->get('job.tests.passed_rate');
+    }
+
+    /**
+     * Returns the number of successful job tests.
      *
      * @return integer
      */
     public function getPassedTestsCount()
     {
-        return $this->getTotalTestsCount() - $this->getFailedTestsCount();
+        return $this->get('job.tests.passed_count');
     }
 
     /**
@@ -231,7 +379,7 @@ class JenkinsDataCollector extends DataCollector
      */
     public function getEndPoint()
     {
-        return $this->get('project.endpoint');
+        return $this->get('job.endpoint');
     }
 
     /**

@@ -11,107 +11,146 @@
 
 namespace FOS\Bundle\JenkinsBundle\Tests\DataCollector;
 
-use FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory;
+use FOS\Bundle\JenkinsBundle\Parser\JobDataParser;
+use FOS\Bundle\JenkinsBundle\Parser\JobTestSuiteParser;
 use FOS\Bundle\JenkinsBundle\DataCollector\JenkinsDataCollector;
 
 class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \SimpleXmlElement
-     */
-    private $xml;
-
-    /**
-     * @var string
-     */
-    private $endpoint;
+    private $collector;
 
     protected function setup()
     {
-        $this->endpoint = 'http://localhost:8080/job/Project/';
-        $this->logger = new BuildHistory(new  \SimpleXmlElement(file_get_contents(__DIR__.'/../Fixtures/last-builds.xml')));
+        $collector = new JenkinsDataCollector('http://localhost:8080/job/Syndication/');
+        $collector->setJobReportUri(__DIR__.'/../Fixtures/builds-summary.json');
+        $collector->setLastBuildReportUri(__DIR__.'/../Fixtures/build.json');
+        $collector->setJobDataParser(new JobDataParser());
+        $collector->setJobTestSuiteParser(new JobTestSuiteParser());
+
+        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
+        $response = $this->getMock('Symfony\Component\HttpFoundation\Response');
+        $collector->collect($request, $response);
+
+        $this->collector = $collector;
     }
 
     protected function tearDown()
     {
-        $this->logger = null;
+        $this->collector = null;
     }
 
-    public function testCollect()
+    public function testGetProjectName()
     {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
-        $response = $this->getMock('Symfony\Component\HttpFoundation\Response');
-
-        $collector = new JenkinsDataCollector($this->logger, $this->endpoint);
-        $this->assertEquals(0, count($collector->getBuilds()));
-
-        $collector->collect($request, $response);
-        $this->assertEquals(10, count($collector->getBuilds()));
+        $this->assertEquals('Syndication', $this->collector->getProjectName());
     }
 
-    public function testIsLastBuildSuccessfull()
+    public function testGetDisplayName()
     {
-        $collector = $this->getCollector();
-        $this->assertTrue($collector->isLastBuildSuccessfull());
+        $this->assertEquals('Syndication', $this->collector->getDisplayName());
     }
 
-    public function testGetLastBuildNumber()
+    public function testGetDescription()
     {
-        $collector = $this->getCollector();
-        $this->assertEquals(28, $collector->getLastBuildNumber());
+        $this->assertEquals('Continuous Integration for the Syndication component', $this->collector->getDescription());
     }
 
-    public function testGetSuccessfullBuildsCount()
+    public function testGetUrl()
     {
-        $collector = $this->getCollector();
-        $this->assertEquals(9, $collector->getSuccessfullBuildsCount());
+        $this->assertEquals('http://localhost:8080/job/Syndication/', $this->collector->getUrl());
     }
 
-    public function testGetFailedBuildsCount()
+    public function testIsBuildable()
     {
-        $collector = $this->getCollector();
-        $this->assertEquals(1, $collector->getFailedBuildsCount());
+        $this->assertTrue($this->collector->isBuildable());
     }
 
-    public function testHasFailedBuilds()
+    public function testGetBuildsCount()
     {
-        $collector = $this->getCollector();
-        $this->assertTrue($collector->hasFailedBuilds());
+        $this->assertEquals(30, $this->collector->getBuildsCount());
     }
 
-    public function testGetBuilds()
+    public function testGetFirstBuild()
     {
-        $collector = $this->getCollector();
-        $this->assertEquals(10, count($collector->getBuilds()));
+        $this->assertEquals(1, $this->collector->getFirstBuild());
     }
 
-    public function testGetBuild()
+    public function testGetLastBuild()
     {
-        $collector = $this->getCollector();
-        $this->assertNotNull($collector->getBuild(26));
-        $this->assertNull($collector->getBuild(10));
+        $this->assertEquals(30, $this->collector->getLastBuild());
+    }
+
+    public function testGetLastCompletedBuild()
+    {
+        $this->assertEquals(27, $this->collector->getLastCompletedBuild());
+    }
+
+    public function testGetLastFailedBuild()
+    {
+        $this->assertEquals(11, $this->collector->getLastFailedBuild());
+    }
+
+    public function testGetLastStableBuild()
+    {
+        $this->assertEquals(29, $this->collector->getLastStableBuild());
+    }
+
+    public function testGetLastSuccessfulBuild()
+    {
+        $this->assertEquals(30, $this->collector->getLastSuccessfulBuild());
+    }
+
+    public function testGetLastUnsuccessfulBuild()
+    {
+        $this->assertEquals(26, $this->collector->getLastUnsuccessfulBuild());
+    }
+
+    public function testGetLastUnstableBuild()
+    {
+        $this->assertEquals(18, $this->collector->getLastUnstableBuild());
+    }
+
+    public function testGetNextBuild()
+    {
+        $this->assertEquals(31, $this->collector->getNextBuild());
+    }
+
+    public function testIsLastBuildSuccessful()
+    {
+        $this->assertTrue($this->collector->isLastBuildSuccessful());
+    }
+
+    public function testGetFailedTestsCount()
+    {
+        $this->assertEquals(1, $this->collector->getFailedTestsCount());
+    }
+
+    public function testGetSkippedTestsCount()
+    {
+        $this->assertEquals(0, $this->collector->getSkippedTestsCount());
+    }
+
+    public function testGetTotalTestsCount()
+    {
+        $this->assertEquals(40, $this->collector->getTotalTestsCount());
+    }
+
+    public function testGetPassedTestsRate()
+    {
+        $this->assertEquals(97.5, $this->collector->getPassedTestsRate());
+    }
+
+    public function testGetPassedTestsCount()
+    {
+        $this->assertEquals(39, $this->collector->getPassedTestsCount());
     }
 
     public function testGetName()
     {
-        $collector = $this->getCollector();
-        $this->assertEquals('jenkins', $collector->getName());
+        $this->assertEquals('jenkins', $this->collector->getName());
     }
 
     public function testGetEndPoint()
     {
-        $collector = $this->getCollector();
-        $this->assertEquals('http://localhost:8080/job/Project/', $collector->getEndPoint());
-    }
-
-    private function getCollector()
-    {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
-        $response = $this->getMock('Symfony\Component\HttpFoundation\Response');
-
-        $collector = new JenkinsDataCollector($this->logger, $this->endpoint);
-        $collector->collect($request, $response);
-
-        return $collector;
+        $this->assertEquals('http://localhost:8080/job/Syndication/', $this->collector->getEndPoint());
     }
 }

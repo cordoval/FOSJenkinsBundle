@@ -7,14 +7,22 @@
     <parameters>
         <parameter key="jenkins.data_collector.class">FOS\Bundle\JenkinsBundle\DataCollector\JenkinsDataCollector</parameter>
         <parameter key="jenkins.logger.build_history_class">FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory</parameter>
+        <parameter key="jenkins.parser.job_data_parser_class">FOS\Bundle\JenkinsBundle\Parser\JobDataParser</parameter>
+        <parameter key="jenkins.parser.job_test_suite_parser_class">FOS\Bundle\JenkinsBundle\Parser\JobTestSuiteParser</parameter>
     </parameters>
 
     <services>
 
         <service id="data_collector.jenkins" class="%jenkins.data_collector.class%" public="false">
             <tag name="data_collector" template="FOSJenkinsBundle:Collector:jenkins" id="jenkins" />
-            <argument type="service" id="jenkins.logger.build_history" />
+            <!--<argument type="service" id="jenkins.logger.build_history" />-->
             <argument>%jenkins.endpoint%</argument>
+            <call method="setJobDataParser">
+                <argument type="service" id="jenkins.parser.job_data_parser" />
+            </call>
+            <call method="setJobTestSuiteParser">
+                <argument type="service" id="jenkins.parser.job_test_suite_parser" />
+            </call>
         </service>
 
         <service id="jenkins.logger.build_history" class="%jenkins.logger.build_history_class%" public="false">
@@ -26,5 +34,8 @@
             <argument>0</argument>
             <argument>true</argument>
         </service>
+
+        <service id="jenkins.parser.job_data_parser" class="%jenkins.parser.job_data_parser_class%" public="false"/>
+        <service id="jenkins.parser.job_test_suite_parser" class="%jenkins.parser.job_test_suite_parser_class%" public="false"/>
     </services>
 </container>

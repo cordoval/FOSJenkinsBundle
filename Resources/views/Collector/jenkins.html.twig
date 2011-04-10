@@ -29,6 +29,10 @@
             {{ collector.passedTestsCount }}/{{ collector.totalTestsCount }}
         </span>
     {% endif %}
+
+        <span{{ collector.failedTestsCount ? 'style="background-color: #a33"' : '' }}>
+            {{ collector.passedTestsRate }}%
+        </span>
     </span>
 </span>
 {% endblock %}

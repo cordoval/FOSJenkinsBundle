@@ -27,6 +27,7 @@ class SingleBuildReportParser extends ReportParser
     public function parse()
     {
         if ($data = $this->fetchData()) {
+
             $suite = new TestSuite($data->totalCount, $data->failCount,  $data->skipCount);
 
             $this->data = array(

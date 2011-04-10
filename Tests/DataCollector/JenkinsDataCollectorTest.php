@@ -21,11 +21,15 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
 
     protected function setup()
     {
+        $jobDataParser = new JobDataParser();
+        $jobDataParser->setPath(__DIR__.'/../Fixtures/builds-summary.json');
+
+        $testSuiteParser = new JobTestSuiteParser();
+        $testSuiteParser->setPath(__DIR__.'/../Fixtures/build.json');
+
         $collector = new JenkinsDataCollector('http://localhost:8080/job/Syndication/');
-        $collector->setJobReportUri(__DIR__.'/../Fixtures/builds-summary.json');
-        $collector->setLastBuildReportUri(__DIR__.'/../Fixtures/build.json');
-        $collector->setJobDataParser(new JobDataParser());
-        $collector->setJobTestSuiteParser(new JobTestSuiteParser());
+        $collector->setJobDataParser($jobDataParser);
+        $collector->setJobTestSuiteParser($testSuiteParser);
 
         $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
         $response = $this->getMock('Symfony\Component\HttpFoundation\Response');

@@ -49,20 +49,6 @@ class JenkinsDataCollector extends DataCollector
     private $jobTestSuiteParser;
 
     /**
-     * Uri to the project report.
-     *
-     * @var string
-     */
-    private $jobReportUri;
-
-    /**
-     * Uri to the last build report.
-     *
-     * @var string
-     */
-    private $lastBuildReportUri;
-
-    /**
      * Constructor.
      *
      * @param string $endpoint A Jenkins project endpoint
@@ -83,16 +69,6 @@ class JenkinsDataCollector extends DataCollector
     }
 
     /**
-     * Sets the uri to the project general information log.
-     *
-     * @param string $uri A path or uri to the project logs.
-     */
-    public function setJobReportUri($uri)
-    {
-        $this->jobReportUri = $uri;
-    }
-
-    /**
      * Sets the JobTestSuiteParser instance.
      *
      * @param JobDataParser $parser
@@ -103,53 +79,21 @@ class JenkinsDataCollector extends DataCollector
     }
 
     /**
-     * Sets the uri to the last build log.
-     *
-     * @param string $uri A path or uri to the last build logs.
-     */
-    public function setLastBuildReportUri($uri)
-    {
-        $this->lastBuilReportUri = $uri;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data['job.endpoint'] = $this->endpoint;
 
-        if ($this->jobDataParser && $this->jobReportUri) {
-            $this->collectJobData();
+        if ($this->jobDataParser) {
+            $this->jobDataParser->parse();
+            $this->data = array_merge($this->data, $this->jobDataParser->getData());
         }
 
-        if ($this->jobTestSuiteParser && $this->lastBuildReportUri) {
-            $this->collectTestSuiteData();
+        if ($this->jobTestSuiteParser) {
+            $this->jobTestSuiteParser->parse();
+            $this->data = array_merge($this->data, $this->jobTestSuiteParser->getData());
         }
-    }
-
-    /**
-     * Collects general information on a Jenkins job.
-     *
-     */
-    private function collectJobData()
-    {
-        $this->jobDataParser->setPath($this->jobReportUri);
-        $this->jobDataParser->parse();
-
-        $this->data = array_merge($this->data, $this->jobDataParser->getData());
-    }
-
-    /**
-     * Collects statistics on the last executed test suite.
-     *
-     */
-    private function collectTestSuiteData()
-    {
-        $this->jobTestSuiteParser->setPath($this->lastBuilReportUri);
-        $this->jobTestSuiteParser->parse();
-
-        $this->data = array_merge($this->data, $this->jobTestSuiteParser->getData());
     }
 
     /**

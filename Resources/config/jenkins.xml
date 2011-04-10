@@ -6,16 +6,15 @@
 
     <parameters>
         <parameter key="jenkins.data_collector.class">FOS\Bundle\JenkinsBundle\DataCollector\JenkinsDataCollector</parameter>
-        <parameter key="jenkins.logger.build_history_class">FOS\Bundle\JenkinsBundle\BuildAnalysis\BuildHistory</parameter>
         <parameter key="jenkins.parser.job_data_parser_class">FOS\Bundle\JenkinsBundle\Parser\JobDataParser</parameter>
         <parameter key="jenkins.parser.job_test_suite_parser_class">FOS\Bundle\JenkinsBundle\Parser\JobTestSuiteParser</parameter>
     </parameters>
 
     <services>
 
+        <!-- Jenkins Data Collector -->
         <service id="data_collector.jenkins" class="%jenkins.data_collector.class%" public="false">
             <tag name="data_collector" template="FOSJenkinsBundle:Collector:jenkins" id="jenkins" />
-            <!--<argument type="service" id="jenkins.logger.build_history" />-->
             <argument>%jenkins.endpoint%</argument>
             <call method="setJobDataParser">
                 <argument type="service" id="jenkins.parser.job_data_parser" />
@@ -25,17 +24,17 @@
             </call>
         </service>
 
-        <service id="jenkins.logger.build_history" class="%jenkins.logger.build_history_class%" public="false">
-            <argument type="service" id="jenkins.rss.builds.parser"/>
+        <!-- Jenkins Report Parsers -->
+        <service id="jenkins.parser.job_data_parser" class="%jenkins.parser.job_data_parser_class%" public="false">
+            <call method="setPath">
+                <argument type="string">%jenkins.endpoint%/api/json</argument>
+            </call>
         </service>
 
-        <service id="jenkins.rss.builds.parser" class="SimpleXmlElement" public="false">
-            <argument>%jenkins.builds.builds.rss_uri%</argument>
-            <argument>0</argument>
-            <argument>true</argument>
+        <service id="jenkins.parser.job_test_suite_parser" class="%jenkins.parser.job_test_suite_parser_class%" public="false">
+            <call method="setPath">
+                <argument type="string">%jenkins.endpoint%/lastBuild/api/json</argument>
+            </call>
         </service>
-
-        <service id="jenkins.parser.job_data_parser" class="%jenkins.parser.job_data_parser_class%" public="false"/>
-        <service id="jenkins.parser.job_test_suite_parser" class="%jenkins.parser.job_test_suite_parser_class%" public="false"/>
     </services>
 </container>

@@ -16,6 +16,7 @@ namespace FOS\Bundle\JenkinsBundle\ReportParser;
  * Jenkins' API tool and converts to a pure PHP associative array.
  *
  * @author Hugo Hamon <hugo.hamon@sensio.com>
+ * @author William Durand <william.durand@gmail.com>
  */
 class ProjectReportParser extends ReportParser
 {
@@ -33,14 +34,14 @@ class ProjectReportParser extends ReportParser
             'job.url'                      => $data->url,
             'job.buildable'                => $data->buildable,
             'job.builds.count'             => count($data->builds),
-            'job.builds.first'             => $data->firstBuild->number,
-            'job.builds.last'              => $data->lastBuild->number,
-            'job.builds.last_completed'    => $data->lastCompletedBuild->number,
-            'job.builds.last_failed'       => $data->lastFailedBuild->number,
-            'job.builds.last_stable'       => $data->lastStableBuild->number,
-            'job.builds.last_successful'   => $data->lastSuccessfulBuild->number,
-            'job.builds.last_unstable'     => $data->lastUnstableBuild->number,
-            'job.builds.last_unsuccessful' => $data->lastUnsuccessfulBuild->number,
+            'job.builds.first'             => $data->firstBuild ? $data->firstBuild->number : '',
+            'job.builds.last'              => $data->lastBuild ? $data->lastBuild->number : '',
+            'job.builds.last_completed'    => $data->lastCompletedBuild ? $data->lastCompletedBuild->number : '',
+            'job.builds.last_failed'       => $data->lastFailedBuild ? $data->lastFailedBuild->number : '',
+            'job.builds.last_stable'       => $data->lastStableBuild ? $data->lastStableBuild->number : '',
+            'job.builds.last_successful'   => $data->lastSuccessfulBuild ? $data->lastSuccessfulBuild->number : '',
+            'job.builds.last_unstable'     => $data->lastUnstableBuild ? $data->lastUnstableBuild->number : '',
+            'job.builds.last_unsuccessful' => $data->lastUnsuccessfulBuild ? $data->lastUnsuccessfulBuild->number : '',
             'job.builds.next'              => $data->nextBuildNumber,
         );
     }

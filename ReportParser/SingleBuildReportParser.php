@@ -18,6 +18,7 @@ use FOS\Bundle\JenkinsBundle\BuildAnalysis\TestSuite;
  * sent by the Jenkins' API tool and converts to a pure PHP associative array.
  *
  * @author Hugo Hamon <hugo.hamon@sensio.com>
+ * @author William Durand <william.durand1@gmail.com>
  */
 class SingleBuildReportParser extends ReportParser
 {
@@ -28,7 +29,11 @@ class SingleBuildReportParser extends ReportParser
     {
         if ($data = $this->fetchData()) {
 
-            $suite = new TestSuite($data->totalCount, $data->failCount,  $data->skipCount);
+            $totalCount = isset($data->totalCount) ? $data->totalCount : 0;
+            $failCount  = isset($data->failCount)  ? $data->failCount  : 0;
+            $skipCount  = isset($data->skipCount)  ? $data->skipCount  : 0;
+
+            $suite = new TestSuite($totalCount, $failCount,  $skipCount);
 
             $this->data = array(
                 'job.tests.failed_count'  => $suite->getFailedTestsCount(),

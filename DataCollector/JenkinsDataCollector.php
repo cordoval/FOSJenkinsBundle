@@ -28,7 +28,7 @@ class JenkinsDataCollector extends DataCollector
 {
     /**
      * The Jenkins project endpoint
-     * 
+     *
      * @var string
      */
     private $endpoint;
@@ -292,6 +292,16 @@ class JenkinsDataCollector extends DataCollector
     public function getPassedTestsCount()
     {
         return $this->get('job.tests.passed_count');
+    }
+
+    /**
+     * Returns the health icon url.
+     *
+     * @return string
+     */
+    public function getHealthIcon()
+    {
+        return $this->get('job.health_report.icon');
     }
 
     /**

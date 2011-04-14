@@ -19,6 +19,9 @@
 <span class="label">
     <span class="icon"><img src="{{ asset('bundles/fosjenkins/images/profiler/jenkins_menu.png') }}" alt="" /></span>
     <strong>Jenkins</strong>
+    <span>
+        &nbsp;<img style="vertical-align: bottom;" src="{{ collector.endpoint }}/../../images/16x16/{{ collector.healthIcon }}" />
+    </span>
     <span class="count">
     {% if collector.failedTestsCount > 0 %}
         <span title="{{ collector.failedTestsCount }} tests failed" style="background-color: #a33">

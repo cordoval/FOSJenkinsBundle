@@ -17,10 +17,12 @@
 
 {% block menu %}
 <span class="label">
-    <span class="icon"><img src="{{ asset('bundles/fosjenkins/images/profiler/jenkins_menu.png') }}" alt="" /></span>
+    <span class="icon">
+        <img src="{{ asset('bundles/fosjenkins/images/profiler/jenkins_menu.png') }}" alt="" />
+    </span>
     <strong>Jenkins</strong>
     <span>
-        &nbsp;<img style="vertical-align: bottom;" src="{{ collector.endpoint }}/../../images/16x16/{{ collector.healthIcon }}" />
+        &nbsp;<img style="vertical-align: bottom;" src="{{ asset('bundles/fosjenkins/images/icons/16x16/'~ collector.healthIcon) }}" alt="" />
     </span>
     <span class="count">
     {% if collector.failedTestsCount > 0 %}

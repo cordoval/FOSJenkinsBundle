@@ -27,11 +27,18 @@ use FOS\Bundle\JenkinsBundle\ReportParser\ReportParserInterface;
 class JenkinsDataCollector extends DataCollector
 {
     /**
-     * The Jenkins project endpoint
+     * The Jenkins project endpoint.
      *
      * @var string
      */
     private $endpoint;
+
+    /**
+     * Whether or not the Jenkins is enabled.
+     *
+     * @var Boolean
+     */
+    private $isEnabled;
 
     /**
      * An array of registered ReportParserInterface instance.
@@ -43,11 +50,14 @@ class JenkinsDataCollector extends DataCollector
     /**
      * Constructor.
      *
-     * @param string $endpoint A Jenkins project endpoint
+     * @param Boolean $isEnabled Whether or not the server is running
+     * @param string  $endpoint  A Jenkins project endpoint
      */
-    public function __construct($endpoint)
+    public function __construct($isEnabled, $endpoint)
     {
-        $this->endpoint = $endpoint;
+        $this->data      = array();
+        $this->isEnabled = (Boolean) $isEnabled;
+        $this->endpoint  = $endpoint;
     }
 
     /**
@@ -66,12 +76,24 @@ class JenkinsDataCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $this->data['job.endpoint'] = $this->endpoint;
+        if ($this->isEnabled()) {
+            $this->data['job.endpoint'] = $this->endpoint;
 
-        foreach ($this->reports as $report) {
-            $report->parse();
-            $this->data = array_merge($this->data, $report->getData());
+            foreach ($this->reports as $report) {
+                $report->parse();
+                $this->data = array_merge($this->data, $report->getData());
+            }
         }
+    }
+
+    /**
+     * Returns whether or not the Jenkins server is enabled.
+     *
+     * @return Boolean
+     */
+    public function isEnabled()
+    {
+        return $this->isEnabled;
     }
 
     /**
@@ -295,11 +317,13 @@ class JenkinsDataCollector extends DataCollector
     }
 
     /**
-     * Returns the health icon url.
+     * Returns the health color.
+     *
+     * Color can be grey, yellow, red or blue (blue equals green).
      *
      * @return string
      */
-    public function getHealthIcon()
+    public function getHealthColor()
     {
         return $this->get('job.health_report.icon');
     }

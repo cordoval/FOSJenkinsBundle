@@ -54,6 +54,7 @@ class TestSuiteTest extends \PHPUnit_Framework_TestCase
     public function provideTestSuiteStatistics()
     {
         return array(
+            array(0, 0, 0, 0),
             array(40, 0, 0, 100),
             array(40, 20, 0, 50),
             array(40, 27, 0, 32.50)

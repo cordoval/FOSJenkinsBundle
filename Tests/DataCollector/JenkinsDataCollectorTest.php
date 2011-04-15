@@ -18,6 +18,7 @@ use FOS\Bundle\JenkinsBundle\ReportParser\SingleBuildReportParser;
 
 class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
 {
+    const JENKINS_ENDPOINT = 'http://localhost:8080/job/Syndication/';
     private $collector;
 
     protected function setup()
@@ -28,7 +29,7 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
         $buildReportParser = new SingleBuildReportParser();
         $buildReportParser->setPath(__DIR__.'/../Fixtures/build.json');
 
-        $collector = new JenkinsDataCollector('http://localhost:8080/job/Syndication/');
+        $collector = new JenkinsDataCollector(true, self::JENKINS_ENDPOINT);
         $collector->registerReportParser('project', $projectReportParser);
         $collector->registerReportParser('build', $buildReportParser);
 
@@ -42,6 +43,14 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         $this->collector = null;
+    }
+
+    public function testIsEnabled()
+    {
+        $this->assertTrue($this->collector->isEnabled());
+
+        $this->collector = new JenkinsDataCollector(false, self::JENKINS_ENDPOINT);
+        $this->assertFalse($this->collector->isEnabled());
     }
 
     public function testGetProjectName()
@@ -61,7 +70,7 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUrl()
     {
-        $this->assertEquals('http://localhost:8080/job/Syndication/', $this->collector->getUrl());
+        $this->assertEquals(self::JENKINS_ENDPOINT, $this->collector->getUrl());
     }
 
     public function testIsBuildable()
@@ -154,8 +163,13 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('jenkins', $this->collector->getName());
     }
 
+    public function testGetHealthColor()
+    {
+        $this->assertEquals('blue', $this->collector->getHealthColor());
+    }
+
     public function testGetEndPoint()
     {
-        $this->assertEquals('http://localhost:8080/job/Syndication/', $this->collector->getEndPoint());
+        $this->assertEquals(self::JENKINS_ENDPOINT, $this->collector->getEndPoint());
     }
 }

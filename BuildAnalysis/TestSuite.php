@@ -53,12 +53,13 @@ class TestSuite
 
     public function getPassedTestsRate()
     {
+        $rate = 0;
+
         if (0 !== $this->getTotalTestsCount()) {
             $rate = $this->getPassedTestsCount() / $this->getTotalTestsCount();
-        } else {
-            $rate = 0;
+            $rate = round($rate * 100, 2);
         }
 
-        return round($rate * 100, 2);
+        return $rate;
     }
 }

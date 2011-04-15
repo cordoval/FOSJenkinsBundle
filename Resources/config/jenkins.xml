@@ -15,6 +15,7 @@
         <!-- Jenkins Data Collector -->
         <service id="data_collector.jenkins" class="%jenkins.data_collector.class%" public="false">
             <tag name="data_collector" template="FOSJenkinsBundle:Collector:jenkins" id="jenkins" />
+            <argument>%jenkins.enabled%</argument>
             <argument>%jenkins.endpoint%</argument>
             <call method="registerReportParser">
                 <argument type="string">project</argument>

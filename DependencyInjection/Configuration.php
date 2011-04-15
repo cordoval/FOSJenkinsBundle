@@ -37,8 +37,11 @@ class Configuration
 
         $rootNode
             ->children()
-            ->scalarNode('endpoint')
-            ->end();
+            ->scalarNode('endpoint')->end()
+            ->booleanNode('enabled')
+                ->defaultValue(true)
+            ->end()
+        ;
 
         return $treeBuilder->buildTree();
     }

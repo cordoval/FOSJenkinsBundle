@@ -6,7 +6,7 @@
     {% endset %}
     {% set text %}
 
-        {% if not collector.enabled %}
+        {% if not collector.isEnabled %}
             <span title="Offline mode" style="color: #a33">offline</span>
         {% elseif collector.isLastBuildSuccessful %}
             <span title="Build #{{ collector.lastBuild }} successful" style="color: #759e1a">successful</span>
@@ -24,7 +24,7 @@
     </span>
     <strong>Jenkins</strong>
 
-    {% if not collector.enabled %}
+    {% if not collector.isEnabled %}
         <span class="count">
             <span style="background-color: #a33">Offline</span>
         </span>
@@ -58,7 +58,7 @@
         <link href="{{ asset('bundles/fosjenkins/css/jenkins.css') }}" rel="stylesheet" type="text/css" media="screen" />
     {% endblock %}
 
-    {% if not collector.enabled %}
+    {% if not collector.isEnabled %}
 
         <p>
             Offline mode is activated...

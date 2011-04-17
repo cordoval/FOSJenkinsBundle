@@ -30,7 +30,7 @@
         </span>
     {% else %}
         <span>
-            &nbsp;<img style="vertical-align: bottom;" src="{{ asset('bundles/fosjenkins/images/icons/16x16/'~ collector.healthColor ~'.png') }}" alt="" />
+            &nbsp;<img style="vertical-align: bottom;" src="{{ asset('bundles/fosjenkins/images/icons/16x16/'~ collector.healthReportColor ~'.png') }}" alt="" />
         </span>
         <span class="count">
         {% if collector.failedTestsCount > 0 %}

@@ -43,7 +43,7 @@ class ProjectReportParser extends ReportParser
             'job.builds.last_unstable'     => $data->lastUnstableBuild ? $data->lastUnstableBuild->number : '',
             'job.builds.last_unsuccessful' => $data->lastUnsuccessfulBuild ? $data->lastUnsuccessfulBuild->number : '',
             'job.builds.next'              => $data->nextBuildNumber,
-            'job.health_report.icon'       => $data->color,
+            'job.health_report.color'      => $data->color,
         );
     }
 

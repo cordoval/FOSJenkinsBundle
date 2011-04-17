@@ -163,9 +163,9 @@ class JenkinsDataCollectorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('jenkins', $this->collector->getName());
     }
 
-    public function testGetHealthColor()
+    public function testGetHealthReportColor()
     {
-        $this->assertEquals('blue', $this->collector->getHealthColor());
+        $this->assertEquals('blue', $this->collector->getHealthReportColor());
     }
 
     public function testGetEndPoint()

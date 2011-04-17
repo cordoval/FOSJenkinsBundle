@@ -323,9 +323,9 @@ class JenkinsDataCollector extends DataCollector
      *
      * @return string
      */
-    public function getHealthColor()
+    public function getHealthReportColor()
     {
-        return $this->get('job.health_report.icon');
+        return $this->get('job.health_report.color');
     }
 
     /**
